@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 // Declaração da classe Login
 public class Login {
+
     // Declaração de variáveis de instância privadas
     private String nome;
     private String email;
@@ -20,7 +21,6 @@ public class Login {
     }
 
     // Métodos getters e setters para as variáveis nome, email e seenha
-
     // Método para configurar o nome
     public void setNome(String nome) {
         this.nome = nome;
