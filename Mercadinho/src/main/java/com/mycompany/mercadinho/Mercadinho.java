@@ -7,7 +7,8 @@ public class Mercadinho {
         Login logar=new Login();
         logar.cadastro();
         logar.verificarCadastro();
-        Produto p1=new Produto("ARROZ", "A1", 14.0,2);
+        Produto p1=new Produto("ARROZ", "A1", 14.0,1);
+        Produto p2=new Produto("FEIJAO", "A", 13.9, 2);
         System.out.println(p1.toString());
 
     }
