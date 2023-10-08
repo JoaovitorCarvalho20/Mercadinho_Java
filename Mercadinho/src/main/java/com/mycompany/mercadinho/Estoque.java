@@ -16,9 +16,11 @@ import java.util.Map;
 
 public class Estoque {
     private Map<Produto, Integer> produtosQuantidade;
+    private List<Venda> vendas; // Lista para registrar vendas
 
     public Estoque() {
         produtosQuantidade = new HashMap<>();
+         vendas = new ArrayList<>();
     }
 
     public void adicionarProduto(Produto produto, int quantidade) {
@@ -80,4 +82,14 @@ public class Estoque {
             System.out.println(produto.toString() + " - Quantidade em estoque: " + quantidade + " unidades.");
         }
     }
+
+    void registrarVenda(Produto produto, int quantidade) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String toString() {
+        return "Estoque{" + "produtosQuantidade=" + produtosQuantidade + ", vendas=" + vendas + '}';
+    }
+    
 }
