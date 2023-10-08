@@ -1,7 +1,7 @@
 
 package com.mycompany.mercadinho;
 
-// Uso de herança dos atributos defindos em funcionario ian
+// Uso de herança dos atributos defindos em funcionario 
 
 public class Administrador extends Funcionario {
    private boolean isAdm;
