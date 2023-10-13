@@ -8,7 +8,7 @@ public class Venda {
     private List<Estoque> caixas;
     private List<VendaItem> itens; // Lista de itens vendidos
 
-    public Venda() {
+    public Venda(Produto produto, int quantidade) {
         caixas = new ArrayList<>();
         itens = new ArrayList<>();
         // Inicializar as 5 caixas
@@ -16,6 +16,15 @@ public class Venda {
             caixas.add(new Estoque());
         }
     }
+
+    public Produto getProduto() {
+    // Aqui, retornamos o primeiro item da venda como exemplo.
+    if (!itens.isEmpty()) {
+        return itens.get(0).getProduto();
+    } else {
+        return null; // Ou você pode lançar uma exceção se preferir.
+    }
+}
 
     public Estoque getCaixa(int indice) {
         if (indice >= 0 && indice < 5) {
@@ -78,6 +87,10 @@ public class Venda {
     @Override
     public String toString() {
         return "Venda{" + "caixas=" + caixas + ", itens=" + itens + '}';
+    }
+
+    Iterable<VendaItem> getItens() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }

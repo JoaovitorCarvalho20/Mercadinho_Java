@@ -22,7 +22,16 @@ public class Estoque {
         produtosQuantidade = new HashMap<>();
          vendas = new ArrayList<>();
     }
+    public Map<Produto, Integer> getProdutosQuantidade() {
+    return produtosQuantidade;
+}
 
+public List<Produto> getProdutos() {
+    List<Produto> produtos = new ArrayList<>(produtosQuantidade.keySet());
+    return produtos;
+}
+
+  
     public void adicionarProduto(Produto produto, int quantidade) {
         if (quantidade <= 0) {
             System.out.println("A quantidade deve ser maior que zero.");
@@ -37,6 +46,7 @@ public class Estoque {
             produtosQuantidade.put(produto, quantidade);
             System.out.println(quantidade + " unidades de " + produto.getNomeProduto() + " adicionadas ao estoque.");
         }
+      
     }
 
     public void removerProduto(Produto produto, int quantidade) {
@@ -83,13 +93,35 @@ public class Estoque {
         }
     }
 
-    void registrarVenda(Produto produto, int quantidade) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+   public void registrarVenda(Produto produto, int quantidade) {
+    if (quantidade <= 0) {
+        System.out.println("A quantidade deve ser maior que zero.");
+        return;
     }
+
+    if (produtosQuantidade.containsKey(produto)) {
+        int quantidadeExistente = produtosQuantidade.get(produto);
+        if (quantidadeExistente >= quantidade) {
+            produtosQuantidade.put(produto, quantidadeExistente - quantidade);
+            System.out.println(quantidade + " unidades de " + produto.getNomeProduto() + " vendidas.");
+        } else {
+            System.out.println("Quantidade insuficiente em estoque para vender.");
+        }
+    } else {
+        System.out.println("Produto não encontrado em estoque.");
+    }
+
+    // Aqui você pode adicionar a venda à lista de vendas ou a outro registro, se necessário.
+    Venda venda = new Venda(produto, quantidade);
+    vendas.add(venda);
+}
+
 
     @Override
     public String toString() {
         return "Estoque{" + "produtosQuantidade=" + produtosQuantidade + ", vendas=" + vendas + '}';
     }
+
+  
     
 }
