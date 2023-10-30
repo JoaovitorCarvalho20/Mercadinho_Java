@@ -1,21 +1,24 @@
 package com.mycompany.mercadinho;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Mercadinho {
 
     public static void main(String[] args) {
+        // Inicialização de objetos e variáveis
         Estoque estoque = new Estoque();
-        Administrador admin = new Administrador("Admin", "admin123", "senhaAdmin");
         List<Venda> vendas = new ArrayList<>();
         List<Cliente> clientes = new ArrayList<>();
         List<Funcionario> funcionarios = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
 
+        // Loop principal do programa
         while (true) {
+            System.out.println("______________________________________________");
             System.out.println("Sistema de Mercadinho");
+            // Exibe o menu de opções
             System.out.println("1. Realizar Venda");
             System.out.println("2. Cancelar Venda");
             System.out.println("3. Verificar Estoque");
@@ -23,16 +26,20 @@ public class Mercadinho {
             System.out.println("5. Cadastrar Cliente");
             System.out.println("6. Verificar Cliente");
             System.out.println("7. Adicionar Produto");
-            System.out.println("8. Editar Credenciais de Funcionário");
-            System.out.println("9. Criar Funcionário");
-            System.out.println("10. Editar Produto");
-            System.out.println("11. Sair"); // Adicionado um novo caso para editar produtos
+            System.out.println("8. Sair do sistema");
+            System.out.println("9. Criar Credenciais de Funcionário");
+            System.out.println("10. Editar Funcionário");
+            System.out.println("11. Editar Produto");
+            System.out.println("______________________________________________");
 
+            // Obtém a escolha do usuário
             int choice = scanner.nextInt();
             scanner.nextLine();
 
+            // Estrutura de switch para processar a escolha do usuário
             switch (choice) {
                 case 1:
+                    // Realizar Venda
                     System.out.println("Produtos disponíveis no estoque:");
                     estoque.exibirEstoque();
 
@@ -40,14 +47,18 @@ public class Mercadinho {
                     int produtoId = scanner.nextInt();
                     scanner.nextLine();
 
+                    // Encontra o produto no estoque
                     Produto produtoAVender = encontrarProdutoPorID(estoque, produtoId);
                     if (produtoAVender != null) {
                         System.out.print("Digite a quantidade a ser vendida: ");
                         int quantidadeAVender = scanner.nextInt();
                         scanner.nextLine();
 
-                        Venda venda = new Venda(produtoAVender, quantidadeAVender);
-                        venda.realizarVenda(0, produtoAVender, quantidadeAVender);
+                        // Cria um item de venda e uma venda, realiza a venda e a adiciona à lista de vendas
+                        VendaItem item = new VendaItem(produtoAVender, quantidadeAVender);
+                        Venda venda = new Venda();
+                        venda.adicionarItem(item);
+                       venda.realizarVenda(0, estoque, venda.getItens());
                         vendas.add(venda);
 
                         System.out.println("Venda realizada com sucesso!");
@@ -57,6 +68,7 @@ public class Mercadinho {
                     break;
 
                 case 2:
+                    // Cancelar Venda
                     System.out.println("Produtos disponíveis no estoque:");
                     estoque.exibirEstoque();
 
@@ -64,15 +76,13 @@ public class Mercadinho {
                     int produtoCancelarId = scanner.nextInt();
                     scanner.nextLine();
 
+                    // Encontra o produto no estoque
                     Produto produtoACancelar = encontrarProdutoPorID(estoque, produtoCancelarId);
                     if (produtoACancelar != null) {
-                        System.out.print("Digite a quantidade a ser cancelada: ");
-                        int quantidadeACancelar = scanner.nextInt();
-                        scanner.nextLine();
-
+                        // Encontra a venda associada ao produto e a cancela
                         Venda vendaParaCancelar = encontrarVendaPorProduto(vendas, produtoACancelar);
                         if (vendaParaCancelar != null) {
-                            vendaParaCancelar.cancelarVenda(0, produtoACancelar, quantidadeACancelar);
+                            vendaParaCancelar.cancelarVenda(estoque); // Cancela toda a venda
                             System.out.println("Venda cancelada com sucesso!");
                         } else {
                             System.out.println("Produto não encontrado nas vendas.");
@@ -83,21 +93,27 @@ public class Mercadinho {
                     break;
 
                 case 3:
+                    // Verificar Estoque
+                    // Exibe a lista de produtos disponíveis no estoque
                     System.out.println("Produtos disponíveis no estoque:");
                     estoque.exibirEstoque();
                     break;
 
                 case 4:
+                    // Gerar Relatório Fiscal
                     System.out.print("Digite o ano do relatório fiscal: ");
                     int ano = scanner.nextInt();
                     scanner.nextLine();
+
+                    // Calcula as vendas anuais e exibe o valor
                     GerenciamentoFiscal gerenciamentoFiscal = new GerenciamentoFiscal(vendas);
                     double vendasAnuais = gerenciamentoFiscal.calcularVendasAnuais(ano);
                     System.out.println("Vendas anuais em " + ano + ": R$" + vendasAnuais);
                     break;
 
                 case 5:
-                    // Opção para cadastrar um cliente
+                    // Cadastrar Cliente
+                    // Solicita informações do cliente e o cadastra
                     System.out.print("Digite o nome do cliente: ");
                     String nomeCliente = scanner.nextLine();
                     System.out.print("Digite o telefone do cliente: ");
@@ -115,7 +131,7 @@ public class Mercadinho {
                     if (clienteExistente) {
                         System.out.println("Cliente já existe no sistema.");
                     } else {
-                        // Crie um novo cliente
+                        // Crie um novo cliente e o adicione à lista
                         Cliente novoCliente = new Cliente(nomeCliente, telefoneCliente, enderecoCliente, cpfCliente, emailCliente);
                         clientes.add(novoCliente);
                         System.out.println("Cliente cadastrado com sucesso!");
@@ -123,7 +139,7 @@ public class Mercadinho {
                     break;
 
                 case 6:
-                    // Opção para verificar um cliente
+                    // Verificar Cliente
                     System.out.print("Digite o CPF do cliente a ser verificado: ");
                     String cpfVerificar = scanner.nextLine();
                     boolean clienteExiste = verificarCliente(clientes, cpfVerificar);
@@ -134,38 +150,55 @@ public class Mercadinho {
                     }
                     break;
 
-                case 7:
-                    System.out.print("Digite o nome do novo produto: ");
-                    String nomeProduto = scanner.nextLine();
-                    System.out.print("Digite o preço do produto: ");
-                    double precoProduto = scanner.nextDouble();
-                    scanner.nextLine();
-                    System.out.print("Digite a quantidade inicial em estoque: ");
-                    int quantidadeInicial = scanner.nextInt();
-                    scanner.nextLine();
+               case 7:
+    // Adicionar Produto
+    boolean continuarAdicionandoProdutos = true;
 
-                    Produto novoProduto = new Produto(nomeProduto, precoProduto);
-                    estoque.adicionarProduto(novoProduto, quantidadeInicial);
-                    System.out.println("Produto adicionado ao estoque com sucesso!");
-                    break;
+    while (continuarAdicionandoProdutos) {
+        System.out.print("Digite o nome do novo produto (ou pressione Esc para parar): ");
+        String nomeProduto = scanner.nextLine();
+        if (nomeProduto.equalsIgnoreCase("Esc")) {
+            continuarAdicionandoProdutos = false;
+            continue;
+        }
+
+        System.out.print("Digite o preço do produto: ");
+        double precoProduto = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.print("Digite a quantidade inicial em estoque: ");
+        int quantidadeInicial = scanner.nextInt();
+        scanner.nextLine();
+
+        // Cria um novo produto e o adiciona ao estoque
+        Produto novoProduto = new Produto(nomeProduto, precoProduto);
+        estoque.adicionarProduto(novoProduto, quantidadeInicial);
+        System.out.println("Produto adicionado ao estoque com sucesso!");
+    }
+    break;
+
 
                 case 8:
+                   //sair do menu 
                     System.out.println("Saindo do sistema.");
                     scanner.close();
                     System.exit(0);
                     break;
 
                 case 9:
+                    // Criar Funcionário
+                    // Cria um novo funcionário com informações como nome, ID, senha e se é administrador ou não
                     Funcionario funcionario = criarFuncionario();
                     funcionarios.add(funcionario);
                     System.out.println("Funcionário criado com sucesso!");
                     break;
 
                 case 10:
+                    // Editar Credenciais de Funcionário
                     System.out.print("Digite o ID do funcionário a ser editado: ");
                     String idEditar = scanner.nextLine();
                     Funcionario funcionarioParaEditar = encontrarFuncionarioPorID(funcionarios, idEditar);
                     if (funcionarioParaEditar != null) {
+                        // Edita as credenciais do funcionário
                         editarCredenciais(funcionarioParaEditar);
                         System.out.println("Credenciais do funcionário editadas com sucesso!");
                     } else {
@@ -174,11 +207,13 @@ public class Mercadinho {
                     break;
 
                 case 11:
+                    // Editar Produto
                     System.out.println("Editar Produto");
                     System.out.print("Digite o ID do produto a ser editado: ");
                     int produtoEditarId = scanner.nextInt();
                     scanner.nextLine();
 
+                    // Encontra o produto no estoque e permite editar seu nome e preço
                     Produto produtoAEditar = encontrarProdutoPorID(estoque, produtoEditarId);
                     if (produtoAEditar != null) {
                         System.out.print("Digite o novo nome do produto: ");
@@ -260,8 +295,10 @@ public class Mercadinho {
     // Método auxiliar para encontrar uma venda por produto
     private static Venda encontrarVendaPorProduto(List<Venda> vendas, Produto produto) {
         for (Venda venda : vendas) {
-            if (venda.getProduto().equals(produto)) {
-                return venda;
+            for (VendaItem item : venda.getItens()) {
+                if (item.getProduto().equals(produto)) {
+                    return venda;
+                }
             }
         }
         return null;
