@@ -1,12 +1,12 @@
 package com.mycompany.mercadinho;
 
 public class Produto {
-    private static int contador;
+    private static int contador = 0;
     private String nomeProduto;
     private double valorDoProduto;
     private int id;
 
-    public Produto(String nomeProduto, String nomeProduto1, double valorDoProduto) {
+    public Produto(String nomeProduto, double valorDoProduto) {
         this.nomeProduto = nomeProduto;
         this.valorDoProduto = valorDoProduto;
         this.id = contador; // Atribui o valor de contador como o ID do produto
@@ -15,10 +15,6 @@ public class Produto {
 
     public static int getContador() {
         return contador;
-    }
-
-    Produto(String nomeProduto, double precoProduto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public String getNomeProduto() {

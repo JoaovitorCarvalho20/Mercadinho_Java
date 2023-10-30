@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.mercadinho;
 
-/**
- *
- * @author joaov
- */
 public class VendaItem {
     private Produto produto;
     private int quantidade;
@@ -25,10 +17,12 @@ public class VendaItem {
         return quantidade;
     }
 
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
     @Override
     public String toString() {
         return "VendaItem{" + "produto=" + produto + ", quantidade=" + quantidade + '}';
     }
-    
 }
-

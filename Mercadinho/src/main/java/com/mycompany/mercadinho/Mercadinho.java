@@ -58,7 +58,7 @@ public class Mercadinho {
                         VendaItem item = new VendaItem(produtoAVender, quantidadeAVender);
                         Venda venda = new Venda();
                         venda.adicionarItem(item);
-                       venda.realizarVenda(0, estoque, venda.getItens());
+                        venda.realizarVenda(0, estoque);
                         vendas.add(venda);
 
                         System.out.println("Venda realizada com sucesso!");
@@ -150,35 +150,34 @@ public class Mercadinho {
                     }
                     break;
 
-               case 7:
-    // Adicionar Produto
-    boolean continuarAdicionandoProdutos = true;
+                case 7:
+                    // Adicionar Produto
+                    boolean continuarAdicionandoProdutos = true;
 
-    while (continuarAdicionandoProdutos) {
-        System.out.print("Digite o nome do novo produto (ou pressione Esc para parar): ");
-        String nomeProduto = scanner.nextLine();
-        if (nomeProduto.equalsIgnoreCase("Esc")) {
-            continuarAdicionandoProdutos = false;
-            continue;
-        }
+                    while (continuarAdicionandoProdutos) {
+                        System.out.print("Digite o nome do novo produto (ou pressione Esc para parar): ");
+                        String nomeProduto = scanner.nextLine();
+                        if (nomeProduto.equalsIgnoreCase("Esc")) {
+                            continuarAdicionandoProdutos = false;
+                            continue;
+                        }
 
-        System.out.print("Digite o preço do produto: ");
-        double precoProduto = scanner.nextDouble();
-        scanner.nextLine();
-        System.out.print("Digite a quantidade inicial em estoque: ");
-        int quantidadeInicial = scanner.nextInt();
-        scanner.nextLine();
+                        System.out.print("Digite o preço do produto: ");
+                        double precoProduto = scanner.nextDouble();
+                        scanner.nextLine();
+                        System.out.print("Digite a quantidade inicial em estoque: ");
+                        int quantidadeInicial = scanner.nextInt();
+                        scanner.nextLine();
 
-        // Cria um novo produto e o adiciona ao estoque
-        Produto novoProduto = new Produto(nomeProduto, precoProduto);
-        estoque.adicionarProduto(novoProduto, quantidadeInicial);
-        System.out.println("Produto adicionado ao estoque com sucesso!");
-    }
-    break;
-
+                        // Cria um novo produto e o adiciona ao estoque
+                        Produto novoProduto = new Produto(nomeProduto, precoProduto);
+                        estoque.adicionarProduto(novoProduto, quantidadeInicial);
+                        System.out.println("Produto adicionado ao estoque com sucesso!");
+                    }
+                    break;
 
                 case 8:
-                   //sair do menu 
+                    //sair do menu 
                     System.out.println("Saindo do sistema.");
                     scanner.close();
                     System.exit(0);

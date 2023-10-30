@@ -5,77 +5,47 @@ import java.util.Date;
 import java.util.List;
 
 public class Venda {
-    private List<Estoque> caixas;
     private List<VendaItem> itens; // Lista de itens vendidos
 
-    public Venda(Produto produto, int quantidade) {
-        caixas = new ArrayList<>();
+    public Venda() {
         itens = new ArrayList<>();
-        // Inicializar as 5 caixas
-        for (int i = 0; i < 5; i++) {
-            caixas.add(new Estoque());
+    }
+
+    public void adicionarItem(VendaItem item) {
+        itens.add(item);
+    }
+
+    public boolean realizarVenda(int indiceCaixa, Estoque estoque) {
+        if (itens.isEmpty()) {
+            System.out.println("Nenhum produto foi adicionado à venda. Venda cancelada.");
+            return false;
         }
-    }
 
-    public Produto getProduto() {
-    // Aqui, retornamos o primeiro item da venda como exemplo.
-    if (!itens.isEmpty()) {
-        return itens.get(0).getProduto();
-    } else {
-        return null; // Ou você pode lançar uma exceção se preferir.
-    }
-}
+        for (VendaItem item : itens) {
+            if (item.getQuantidade() <= 0) {
+                System.out.println("A quantidade deve ser maior que zero.");
+                return false;
+            }
 
-    public Estoque getCaixa(int indice) {
-        if (indice >= 0 && indice < 5) {
-            return caixas.get(indice);
-        } else {
-            System.out.println("Índice de caixa inválido.");
-            return null;
+            Produto produto = item.getProduto();
+            if (estoque.verificarEstoque(produto) >= item.getQuantidade()) {
+                estoque.removerProduto(produto, item.getQuantidade());
+                System.out.println(item.getQuantidade() + " unidades de " + produto.getNomeProduto() + " vendidas.");
+            } else {
+                System.out.println("Quantidade insuficiente em estoque para vender.");
+                return false;
+            }
         }
+
+        itens.clear(); // Limpa a lista de itens após a venda
+        return true;
+    
     }
 
-    // Método para realizar uma venda em uma caixa específica
-    public void realizarVenda(int indiceCaixa, Produto produto, int quantidade) {
-        Estoque caixa = getCaixa(indiceCaixa);
-        if (caixa != null) {
-            caixa.registrarVenda(produto, quantidade);
-
-            // Registrar a venda na lista de itens
-            VendaItem item = new VendaItem(produto, quantidade);
-            itens.add(item);
-
-            System.out.println(quantidade + " unidades de " + produto.getNomeProduto() + " vendidas.");
-        }
-    }
-
-    // Método para cancelar uma venda em uma caixa específica
-    public void cancelarVenda(int indiceCaixa, Produto produto, int quantidade) {
-        Estoque caixa = getCaixa(indiceCaixa);
-        if (caixa != null) {
-            caixa.adicionarProduto(produto, quantidade); // Adicionar produtos de volta ao estoque
-            System.out.println("Venda cancelada. " + quantidade + " unidades de " + produto.getNomeProduto() + " adicionadas de volta ao estoque da caixa " + indiceCaixa + ".");
-
-            // Remover o item da lista de itens
-            VendaItem item = new VendaItem(produto, quantidade);
-            itens.remove(item);
-        }
-    }
-
-    // Método para exibir o estoque de uma caixa específica
-    public void exibirEstoqueCaixa(int indiceCaixa) {
-        Estoque caixa = getCaixa(indiceCaixa);
-        if (caixa != null) {
-            caixa.exibirEstoque();
-        }
-    }
-
-    // Método para obter a data da venda
     public Date getData() {
         return new Date(); // Use a data atual como exemplo; você pode configurar a data adequadamente.
     }
 
-    // Método para obter o valor total da venda
     public double getValorTotal() {
         double total = 0;
         for (VendaItem item : itens) {
@@ -84,13 +54,12 @@ public class Venda {
         return total;
     }
 
-    @Override
-    public String toString() {
-        return "Venda{" + "caixas=" + caixas + ", itens=" + itens + '}';
+    public Iterable<VendaItem> getItens() {
+        return itens;
     }
 
-    Iterable<VendaItem> getItens() {
+    void cancelarVenda(Estoque estoque) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }
