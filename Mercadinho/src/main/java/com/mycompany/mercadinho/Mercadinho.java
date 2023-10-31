@@ -67,7 +67,8 @@ public class Mercadinho {
                     }
                     break;
 
-                    
+                   
+                  
                 case 2:
                     // Cancelar Venda
                     System.out.println("Produtos disponíveis no estoque:");
