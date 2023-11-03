@@ -3,6 +3,11 @@ package com.mycompany.mercadinho;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Calendar;
+
 
 public class Mercadinho {
 
@@ -56,7 +61,13 @@ public class Mercadinho {
                         venda.realizarVenda(estoque);
                         vendas.add(venda);
 
+                        double valorVenda = venda.getValorTotal(); // Adicione esta linha para obter o valor da venda
+                        int quantidadeVendida = venda.getQuantidadeTotal(); // Adicione esta linha para obter a quantidade vendida
+
+                        System.out.println("______________________________________________");
                         System.out.println("Venda realizada com sucesso! ID da venda: " + idVenda);
+                        System.out.println("Quantidade vendida: " + quantidadeVendida);
+                        System.out.println("Valor da venda: R$" + valorVenda);
 
                         nextVendaId++;
                     } else {
@@ -65,6 +76,7 @@ public class Mercadinho {
                     break;
 
                 case 2:
+                    System.out.println("______________________________________________");
                     System.out.println("Digite o ID da venda a ser cancelada: ");
                     int idVendaCancelar = scanner.nextInt();
                     scanner.nextLine();
@@ -85,21 +97,75 @@ public class Mercadinho {
                     } else {
                         System.out.println("Venda não encontrada.");
                     }
+                    System.out.println("______________________________________________");
                     break;
 
                 case 3:
+                    System.out.println("______________________________________________");
                     System.out.println("Produtos disponíveis no estoque:");
                     estoque.exibirEstoque();
+                    System.out.println("______________________________________________");
                     break;
 
                 case 4:
-                    System.out.print("Digite o ano do relatório fiscal: ");
-                    int ano = scanner.nextInt();
+                    System.out.println("Opções de relatório fiscal:");
+                    System.out.println("1. Vendas diárias");
+                    System.out.println("2. Vendas mensais");
+                    System.out.println("3. Vendas anuais");
+                    System.out.print("Escolha a opção de relatório: ");
+                    int opcaoRelatorio = scanner.nextInt();
                     scanner.nextLine();
-  
+
                     GerenciamentoFiscal gerenciamentoFiscal = new GerenciamentoFiscal(vendas);
-                    double vendasAnuais = gerenciamentoFiscal.calcularVendasAnuais(ano);
-                    System.out.println("Vendas anuais em " + ano + ": R$" + vendasAnuais);
+
+                    switch (opcaoRelatorio) {
+                        case 1:
+                            // Relatório de vendas diárias
+                            System.out.print("Digite a data no formato 'dd/MM/yyyy': ");
+                            String dataStr = scanner.nextLine();
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+                            try {
+                                Date data = sdf.parse(dataStr);
+                                double vendasDiarias = gerenciamentoFiscal.calcularVendasDiarias(data);
+                                System.out.println("Vendas diárias em " + dataStr + ": R$" + vendasDiarias);
+                            } catch (ParseException e) {
+                                System.out.println("Formato de data inválido. Use 'dd/MM/yyyy'.");
+                            }
+                            break;
+
+                        case 2:
+                            // Relatório de vendas mensais
+                            System.out.print("Digite o ano e mês no formato 'yyyy/MM': ");
+                            String anoMesStr = scanner.nextLine();
+                            SimpleDateFormat sdfAnoMes = new SimpleDateFormat("yyyy/MM");
+
+                            try {
+                                Date anoMes = sdfAnoMes.parse(anoMesStr);
+                                Calendar cal = Calendar.getInstance();
+                                cal.setTime(anoMes);
+                                int ano = cal.get(Calendar.YEAR);
+                                int mes = cal.get(Calendar.MONTH) + 1; // Janeiro é 0, então somamos 1
+                                double vendasMensais = gerenciamentoFiscal.calcularVendasMensais(ano, mes);
+                                System.out.println("Vendas mensais em " + anoMesStr + ": R$" + vendasMensais);
+                            } catch (ParseException e) {
+                                System.out.println("Formato de ano/mês inválido. Use 'yyyy/MM'.");
+                            }
+                            break;
+
+                        case 3:
+                            // Relatório de vendas anuais
+                            System.out.print("Digite o ano: ");
+                            int ano = scanner.nextInt();
+                            scanner.nextLine();
+                            double vendasAnuais = gerenciamentoFiscal.calcularVendasAnuais(ano);
+                            System.out.println("Vendas anuais em " + ano + ": R$" + vendasAnuais);
+                            break;
+
+                        default:
+                            System.out.println("Opção de relatório inválida. Tente novamente.");
+                            break;
+                    }
                     break;
 
                 case 5:

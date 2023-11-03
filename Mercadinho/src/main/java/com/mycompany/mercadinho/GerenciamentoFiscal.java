@@ -65,7 +65,15 @@ public class GerenciamentoFiscal {
 
     @Override
     public String toString() {
-        return "GerenciamentoFiscal{" + "vendas=" + vendas + '}';
+        double totalVendasDiarias = calcularVendasDiarias(new Date());
+        double totalVendasMensais = calcularVendasMensais(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1);
+        double totalVendasAnuais = calcularVendasAnuais(Calendar.getInstance().get(Calendar.YEAR));
+
+        return "GerenciamentoFiscal{" +
+                "vendas=" + vendas +
+                ", totalVendasDiarias=" + totalVendasDiarias +
+                ", totalVendasMensais=" + totalVendasMensais +
+                ", totalVendasAnuais=" + totalVendasAnuais +
+                '}';
     }
-    
 }

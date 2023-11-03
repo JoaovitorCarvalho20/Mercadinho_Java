@@ -8,10 +8,12 @@ public class Venda {
     private static int nextId = 1;
     private int id;
     private List<VendaItem> itens;
+    private double valorTotal; // Adicione o atributo para armazenar o valor total
 
     public Venda() {
         id = nextId++;
         itens = new ArrayList<>();
+        valorTotal = 0; // Inicialize o valor total como zero no construtor
     }
 
     public int getId() {
@@ -20,27 +22,26 @@ public class Venda {
 
     public void adicionarItem(VendaItem item) {
         itens.add(item);
+        // Atualize o valor total durante a adição do item
+        valorTotal += item.getProduto().getValorDoProduto() * item.getQuantidade();
     }
 
-    
     public void realizarVenda(Estoque estoque) {
-    for (VendaItem item : itens) {
-        Produto produto = item.getProduto();
-        int quantidade = item.getQuantidade();
+        for (VendaItem item : itens) {
+            Produto produto = item.getProduto();
+            int quantidade = item.getQuantidade();
 
-        if (estoque.verificarEstoque(produto) >= quantidade) {
-            estoque.removerProduto(produto, quantidade);
-        } else {
-            System.out.println("Erro: estoque insuficiente para o produto " + produto.getNomeProduto());
-           
+            if (estoque.verificarEstoque(produto) >= quantidade) {
+                estoque.removerProduto(produto, quantidade);
+            } else {
+                System.out.println("Erro: estoque insuficiente para o produto " + produto.getNomeProduto());
+            }
         }
     }
-}
 
-    
-    
     public boolean cancelarVenda(Estoque estoque, int quantidadeCancelada) {
         List<VendaItem> itensACancelar = new ArrayList<>();
+        double valorCancelado = 0; // Variável para rastrear o valor cancelado
 
         for (VendaItem item : itens) {
             Produto produto = item.getProduto();
@@ -56,12 +57,15 @@ public class Venda {
                         itensACancelar.add(item);
                     }
 
+                    valorCancelado += quantidadeCancelada * produto.getValorDoProduto(); // Atualize o valor cancelado
                     System.out.println(quantidadeCancelada + " unidades de " + produto.getNomeProduto() + " retornadas ao estoque.");
                     break;
                 } else {
                     estoque.adicionarQuantidadePorID(produto.getId(), quantidade);
                     quantidadeCancelada -= quantidade;
                     item.setQuantidade(0);
+
+                    valorCancelado += quantidade * produto.getValorDoProduto(); // Atualize o valor cancelado
                     System.out.println(quantidade + " unidades de " + produto.getNomeProduto() + " retornadas ao estoque.");
                     itensACancelar.add(item);
                 }
@@ -69,6 +73,7 @@ public class Venda {
         }
 
         itens.removeAll(itensACancelar);
+        valorTotal -= valorCancelado; // Atualize o valor total após o cancelamento
 
         return true;
     }
@@ -78,13 +83,7 @@ public class Venda {
     }
 
     public double getValorTotal() {
-        double total = 0;
-
-        for (VendaItem item : itens) {
-            total += item.getProduto().getValorDoProduto() * item.getQuantidade();
-        }
-
-        return total;
+        return valorTotal;
     }
 
     public Iterable<VendaItem> getItens() {
@@ -110,6 +109,7 @@ public class Venda {
             estoque.adicionarQuantidadePorID(produto.getId(), quantidade);
         }
 
+        valorTotal = 0; // Atualize o valor total após o cancelamento
         itens.clear();
         return true;
     }
