@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Estoque {
+
     private Map<Produto, Integer> produtosQuantidade;
 
     public Estoque() {
@@ -56,8 +57,20 @@ public class Estoque {
         }
     }
 
+    public Produto encontrarProdutoPorID(int produtoId) {
+        for (Produto produto : produtosQuantidade.keySet()) {
+            if (produto.getId() == produtoId) {
+                return produto;
+            }
+        }
+        return null; // Retorna nulo se o produto não for encontrado
+    }
+
     public List<Produto> getProdutos() {
         List<Produto> listaProdutos = new ArrayList<>(produtosQuantidade.keySet());
         return listaProdutos;
     }
+
+
+
 }

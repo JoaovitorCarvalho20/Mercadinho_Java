@@ -14,6 +14,9 @@ public class Mercadinho {
         List<Funcionario> funcionarios = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
 
+        // Variável para controlar o próximo ID de venda
+        int nextVendaId = 1;
+
         // Loop principal do programa
         while (true) {
             System.out.println("______________________________________________");
@@ -38,6 +41,7 @@ public class Mercadinho {
 
             // Estrutura de switch para processar a escolha do usuário
             switch (choice) {
+
                 case 1:
                     // Realizar Venda
                     System.out.println("Produtos disponíveis no estoque:");
@@ -54,45 +58,52 @@ public class Mercadinho {
                         int quantidadeAVender = scanner.nextInt();
                         scanner.nextLine();
 
-                        // Cria um item de venda e uma venda, realiza a venda e a adiciona à lista de vendas
+                        // Gere o ID único para a venda
+                        int idVenda = nextVendaId;
+
+                        // Cria um item de venda e uma venda com o ID gerado
                         VendaItem item = new VendaItem(produtoAVender, quantidadeAVender);
-                        Venda venda = new Venda();
+                        Venda venda = new Venda(idVenda);
                         venda.adicionarItem(item);
-                        venda.realizarVenda(0, estoque);
+                        venda.realizarVenda(estoque);
                         vendas.add(venda);
 
-                        System.out.println("Venda realizada com sucesso!");
+                        System.out.println("Venda realizada com sucesso! ID da venda: " + idVenda);
+                        
+                        // Atualiza o próximo ID de venda
+                        nextVendaId++;
                     } else {
                         System.out.println("Produto não encontrado.");
                     }
                     break;
 
-                   
-                  
                 case 2:
                     // Cancelar Venda
-                    System.out.println("Produtos disponíveis no estoque:");
-                    estoque.exibirEstoque();
-
-                    System.out.print("Digite o ID do produto a ser cancelado: ");
-                    int produtoCancelarId = scanner.nextInt();
+                    System.out.println("Digite o ID da venda a ser cancelada: ");
+                    int idVendaCancelar = scanner.nextInt();
                     scanner.nextLine();
 
-                    // Encontra o produto no estoque
-                    Produto produtoACancelar = encontrarProdutoPorID(estoque, produtoCancelarId);
-                    if (produtoACancelar != null) {
-                        // Encontra a venda associada ao produto e a cancela
-                        Venda vendaParaCancelar = encontrarVendaPorProduto(vendas, produtoACancelar);
-                        if (vendaParaCancelar != null) {
-                            vendaParaCancelar.cancelarVenda(estoque); // Cancela toda a venda
+                    Venda vendaParaCancelar = encontrarVendaPorID(vendas, idVendaCancelar);
+
+                    if (vendaParaCancelar != null) {
+                        // Obter a quantidade total de produtos na venda
+                        int quantidadeCancelada = vendaParaCancelar.getQuantidadeTotal();
+
+                        // Cancela a venda e atualiza o estoque
+                        boolean canceladaComSucesso = vendaParaCancelar.cancelarVenda(estoque, quantidadeCancelada);
+
+                        if (canceladaComSucesso) {
                             System.out.println("Venda cancelada com sucesso!");
+                            System.out.println(quantidadeCancelada + " unidades retornadas ao estoque.");
+                            vendas.remove(vendaParaCancelar); // Remova a venda da lista após o cancelamento
                         } else {
-                            System.out.println("Produto não encontrado nas vendas.");
+                            System.out.println("Erro ao cancelar a venda. Verifique o estoque.");
                         }
                     } else {
-                        System.out.println("Produto não encontrado no estoque.");
+                        System.out.println("Venda não encontrada.");
                     }
                     break;
+                    
 
                 case 3:
                     // Verificar Estoque
@@ -313,5 +324,13 @@ public class Mercadinho {
             }
         }
         return false;
+    }
+      private static Venda encontrarVendaPorID(List<Venda> vendas, int idVenda) {
+        for (Venda venda : vendas) {
+            if (venda.getId() == idVenda) {
+                return venda;
+            }
+        }
+        return null;
     }
 }
