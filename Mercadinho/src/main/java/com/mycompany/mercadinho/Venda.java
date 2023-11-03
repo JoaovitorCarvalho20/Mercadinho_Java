@@ -5,52 +5,76 @@ import java.util.Date;
 import java.util.List;
 
 public class Venda {
-    private static int nextId = 1; // Próximo ID disponível para uma nova venda
-    private int id; // ID da venda
-    private List<VendaItem> itens; // Lista de itens vendidos
+    private static int nextId = 1;
+    private int id;
+    private List<VendaItem> itens;
 
-    public Venda(int idVenda) {
-        id = nextId++; // Atribui um ID único à venda e incrementa o próximo ID disponível
-        itens = new ArrayList<>(); // Inicializa a lista de itens da venda
+    public Venda() {
+        id = nextId++;
+        itens = new ArrayList<>();
     }
 
     public int getId() {
-        return id; // Retorna o ID da venda
+        return id;
     }
 
     public void adicionarItem(VendaItem item) {
-        itens.add(item); // Adiciona um item à lista de itens vendidos na venda
+        itens.add(item);
     }
 
-    public boolean realizarVenda(Estoque estoque) {
-        if (itens.isEmpty()) {
-            System.out.println("Nenhum produto foi adicionado à venda. Venda cancelada.");
-            return false;
+    
+    public void realizarVenda(Estoque estoque) {
+    for (VendaItem item : itens) {
+        Produto produto = item.getProduto();
+        int quantidade = item.getQuantidade();
+
+        if (estoque.verificarEstoque(produto) >= quantidade) {
+            estoque.removerProduto(produto, quantidade);
+        } else {
+            System.out.println("Erro: estoque insuficiente para o produto " + produto.getNomeProduto());
+           
         }
+    }
+}
+
+    
+    
+    public boolean cancelarVenda(Estoque estoque, int quantidadeCancelada) {
+        List<VendaItem> itensACancelar = new ArrayList<>();
 
         for (VendaItem item : itens) {
-            if (item.getQuantidade() <= 0) {
-                System.out.println("A quantidade deve ser maior que zero.");
-                return false;
-            }
-
             Produto produto = item.getProduto();
 
-            if (estoque.verificarEstoque(produto) >= item.getQuantidade()) {
-                estoque.removerProduto(produto, item.getQuantidade());
-                System.out.println(item.getQuantidade() + " unidades de " + produto.getNomeProduto() + " vendidas.");
-            } else {
-                System.out.println("Quantidade insuficiente em estoque para vender.");
-                return false;
+            if (produto != null) {
+                int quantidade = item.getQuantidade();
+
+                if (quantidadeCancelada <= quantidade) {
+                    estoque.adicionarQuantidadePorID(produto.getId(), quantidadeCancelada);
+                    item.setQuantidade(quantidade - quantidadeCancelada);
+
+                    if (item.getQuantidade() == 0) {
+                        itensACancelar.add(item);
+                    }
+
+                    System.out.println(quantidadeCancelada + " unidades de " + produto.getNomeProduto() + " retornadas ao estoque.");
+                    break;
+                } else {
+                    estoque.adicionarQuantidadePorID(produto.getId(), quantidade);
+                    quantidadeCancelada -= quantidade;
+                    item.setQuantidade(0);
+                    System.out.println(quantidade + " unidades de " + produto.getNomeProduto() + " retornadas ao estoque.");
+                    itensACancelar.add(item);
+                }
             }
         }
 
-        itens.clear(); // Limpa a lista de itens após a venda
+        itens.removeAll(itensACancelar);
+
         return true;
     }
 
     public Date getData() {
-        return new Date(); // Retorna a data atual como exemplo; você pode configurar a data adequadamente.
+        return new Date();
     }
 
     public double getValorTotal() {
@@ -60,11 +84,11 @@ public class Venda {
             total += item.getProduto().getValorDoProduto() * item.getQuantidade();
         }
 
-        return total; // Calcula e retorna o valor total da venda
+        return total;
     }
 
     public Iterable<VendaItem> getItens() {
-        return itens; // Retorna os itens vendidos na forma de um objeto Iterable
+        return itens;
     }
 
     public int getQuantidadeVendida(Produto produto) {
@@ -76,42 +100,18 @@ public class Venda {
             }
         }
 
-        return quantidadeVendida; // Retorna a quantidade vendida de um produto específico
+        return quantidadeVendida;
     }
 
-    public boolean cancelarVenda(Estoque estoque, int quantidadeCancelada) {
-        // Cria uma lista para armazenar os itens que serão cancelados
-        List<VendaItem> itensACancelar = new ArrayList<>();
-
-        // Itera pelos itens da venda
+    public boolean cancelarVenda(Estoque estoque) {
         for (VendaItem item : itens) {
-            Produto produto = estoque.encontrarProdutoPorID(item.getProduto().getId());
-
-            if (produto != null) {
-                int quantidade = item.getQuantidade();
-
-                if (quantidadeCancelada <= quantidade) {
-                    estoque.adicionarProduto(produto, quantidadeCancelada);
-                    item.setQuantidade(quantidade - quantidadeCancelada);
-
-                    if (item.getQuantidade() == 0) {
-                        itensACancelar.add(item);
-                    }
-
-                    System.out.println(quantidadeCancelada + " unidades de " + produto.getNomeProduto() + " retornadas ao estoque.");
-                    break;
-                } else {
-                    estoque.adicionarProduto(produto, quantidade);
-                    quantidadeCancelada -= quantidade;
-                    item.setQuantidade(0);
-                    System.out.println(quantidade + " unidades de " + produto.getNomeProduto() + " retornadas ao estoque.");
-                }
-            }
+            Produto produto = item.getProduto();
+            int quantidade = item.getQuantidade();
+            estoque.adicionarQuantidadePorID(produto.getId(), quantidade);
         }
 
-        itens.removeAll(itensACancelar);
-
-        return true; // Cancela uma venda e retorna verdadeiro se o cancelamento foi bem-sucedido
+        itens.clear();
+        return true;
     }
 
     public int getQuantidadeTotal() {
@@ -121,6 +121,6 @@ public class Venda {
             quantidadeTotal += item.getQuantidade();
         }
 
-        return quantidadeTotal; // Retorna a quantidade total de itens vendidos na venda
+        return quantidadeTotal;
     }
 }
