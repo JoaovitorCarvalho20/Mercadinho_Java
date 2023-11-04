@@ -11,7 +11,6 @@ public class GerenciamentoFiscal {
         this.vendas = vendas;
     }
 
-    // Método para calcular as vendas diárias em uma data específica
     public double calcularVendasDiarias(Date data) {
         double totalVendas = 0;
         for (Venda venda : vendas) {
@@ -23,7 +22,6 @@ public class GerenciamentoFiscal {
         return totalVendas;
     }
 
-    // Método para calcular as vendas mensais em um mês e ano específicos
     public double calcularVendasMensais(int ano, int mes) {
         double totalVendas = 0;
         for (Venda venda : vendas) {
@@ -38,7 +36,6 @@ public class GerenciamentoFiscal {
         return totalVendas;
     }
 
-    // Método para calcular as vendas anuais em um ano específico
     public double calcularVendasAnuais(int ano) {
         double totalVendas = 0;
         for (Venda venda : vendas) {
@@ -52,7 +49,6 @@ public class GerenciamentoFiscal {
         return totalVendas;
     }
 
-    // Método auxiliar para verificar se duas datas são do mesmo dia
     private boolean isSameDay(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
@@ -66,8 +62,11 @@ public class GerenciamentoFiscal {
     @Override
     public String toString() {
         double totalVendasDiarias = calcularVendasDiarias(new Date());
-        double totalVendasMensais = calcularVendasMensais(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1);
-        double totalVendasAnuais = calcularVendasAnuais(Calendar.getInstance().get(Calendar.YEAR));
+        Calendar cal = Calendar.getInstance();
+        int ano = cal.get(Calendar.YEAR);
+        int mes = cal.get(Calendar.MONTH) + 1;
+        double totalVendasMensais = calcularVendasMensais(ano, mes);
+        double totalVendasAnuais = calcularVendasAnuais(ano);
 
         return "GerenciamentoFiscal{" +
                 "vendas=" + vendas +

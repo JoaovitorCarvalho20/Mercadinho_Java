@@ -5,10 +5,12 @@ public class Produto {
     private String nomeProduto;
     private double valorDoProduto;
     private int id;
+    private String categoria;
 
-    public Produto(String nomeProduto, double valorDoProduto) {
+    public Produto(String nomeProduto, double valorDoProduto, String categoria) {
         this.nomeProduto = nomeProduto;
         this.valorDoProduto = valorDoProduto;
+        this.categoria = categoria; // Adiciona a categoria do produto
         this.id = contador; // Atribui o valor de contador como o ID do produto
         contador++; // Incrementa o contador para o próximo produto
     }
@@ -33,6 +35,14 @@ public class Produto {
         this.valorDoProduto = valorDoProduto;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
     public int getId() {
         return id;
     }
@@ -46,6 +56,7 @@ public class Produto {
         return "Produto{" +
                 "nomeProduto='" + nomeProduto + '\'' +
                 ", valorDoProduto=" + valorDoProduto +
+                ", categoria='" + categoria + '\'' +
                 ", id=" + id +
                 '}';
     }

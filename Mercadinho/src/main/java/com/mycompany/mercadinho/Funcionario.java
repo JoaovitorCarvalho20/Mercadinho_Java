@@ -1,23 +1,19 @@
 package com.mycompany.mercadinho;
 
 public class Funcionario {
-
     private String nome;
-    private String id;
+    private int id; // Alterado para int
     private String senha;
 
-    //Contrutor sobrecarregado que define o que tem que ser definido como paramentro quanddo se instancia o objeto 
-    public Funcionario(String nome, String id, String senha) {
+    public Funcionario(String nome, int id, String senha) { // Atualizado o construtor
         this.nome = nome;
         this.id = id;
         this.senha = senha;
     }
 
-    //construtor padrao definido 
     public Funcionario() {
     }
 
-    // metodos de acesso 
     public String getNome() {
         return nome;
     }
@@ -26,11 +22,11 @@ public class Funcionario {
         this.nome = nome;
     }
 
-    public String getId() {
+    public int getId() { // Alterado para retornar int
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) { // Alterado para aceitar int como parâmetro
         this.id = id;
     }
 
@@ -42,10 +38,8 @@ public class Funcionario {
         this.senha = senha;
     }
 
-    //metodo toString sobrescrito para imprimir nome id e senha 
     @Override
     public String toString() {
         return "Funcionario{" + "nome=" + nome + ", id=" + id + ", senha=" + senha + '}';
     }
-
 }
