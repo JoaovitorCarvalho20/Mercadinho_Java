@@ -16,19 +16,18 @@ public class Mercadinho {
     private static List<Login> logins = new ArrayList<>();
     private static Login usuarioLogado = null;
     private List<Funcionario> funcionariosCadastrados;
-    private List<Administrador> administradoresCadastrados=new ArrayList<>();
+    private List<Administrador> administradoresCadastrados = new ArrayList<>();
     private List<Login> loginsCadastrados;
     private static int ultimoId = 1; // Inicialize com o valor desejado
     private Estoque estoque = new Estoque();
     private Administrador administrador = new Administrador();
-   private List<Venda> vendas = new ArrayList<>();
-   private List<Cliente> clientes = new ArrayList<>();
-   private  List<Funcionario> funcionarios = new ArrayList<>();
-   private     int nextVendaId = 1;
-   private  Caixa caixaAtual=new Caixa();
+    private List<Venda> vendas = new ArrayList<>();
+    private List<Cliente> clientes = new ArrayList<>();
+    private List<Funcionario> funcionarios = new ArrayList<>();
+    private int nextVendaId = 1;
+    private Caixa caixaAtual = new Caixa();
 
-
-    private void menuAdmin(Administrador adm)  {
+    private void menuAdmin(Administrador adm) {
         while (true) {
             System.out.println("______________________ Menu ADM ________________________");
             System.out.println("Sistema de Mercadinho");
@@ -46,7 +45,7 @@ public class Mercadinho {
             System.out.println("12.Relatórios do Caixa");
             System.out.println("______________________________________________");
 
-            Scanner scanner=new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             int choice = scanner.nextInt();
 
             scanner.nextLine();
@@ -418,6 +417,161 @@ public class Mercadinho {
         }
     }
 
+    private void menuFuncionario(Funcionario funcionario) {
+        while (true) {
+            System.out.println("______________________ Menu Funcionário ________________________");
+            System.out.println("Sistema de Mercadinho");
+            System.out.println("1. Realizar Venda");
+            System.out.println("2. Cancelar Venda");
+            System.out.println("3. Cadastrar Cliente");
+            System.out.println("4. Verificar Cliente");
+            System.out.println("5. Sair do sistema");
+            System.out.println("______________________________________________");
+
+            Scanner scanner = new Scanner(System.in);
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    System.out.println("Produtos disponíveis no estoque:");
+                    estoque.exibirEstoque();
+
+                    List<VendaItem> itensDaVenda = new ArrayList<>();
+                    boolean continuarComprando = true;
+                    double valorTotalVenda = 0.0;
+
+                    while (continuarComprando) {
+                        System.out.print("Digite o ID do produto a ser vendido (ou '0' para finalizar a compra): ");
+                        String input = scanner.nextLine();
+
+                        if ("0".equals(input)) {
+                            continuarComprando = false;
+                            break;
+                        }
+
+                        int produtoId = Integer.parseInt(input);
+                        Produto produtoAVender = encontrarProdutoPorID(estoque, produtoId);
+
+                        if (produtoAVender != null) {
+                            System.out.print("Digite a quantidade a ser vendida: ");
+                            int quantidadeAVender = scanner.nextInt();
+                            scanner.nextLine();
+
+                            VendaItem item = new VendaItem(produtoAVender, quantidadeAVender);
+                            itensDaVenda.add(item);
+
+                            double valorItem = quantidadeAVender * produtoAVender.getValorDoProduto();
+                            valorTotalVenda += valorItem;
+                        } else {
+                            System.out.println("Produto não encontrado.");
+                        }
+                    }
+
+                    if (!itensDaVenda.isEmpty()) {
+                        int idVenda = nextVendaId;
+                        Venda venda = new Venda();
+
+                        for (VendaItem item : itensDaVenda) {
+                            venda.adicionarItem(item);
+                        }
+
+                        venda.realizarVenda(estoque);
+                        vendas.add(venda);
+
+                        int quantidadeVendida = venda.getQuantidadeTotal();
+
+                        System.out.println("______________________________________________");
+                        System.out.println("Venda realizada com sucesso! ID da venda: " + idVenda);
+                        System.out.println("Produtos vendidos:");
+
+                        for (VendaItem item : itensDaVenda) {
+                            Produto produto = item.getProduto();
+                            int quantidade = item.getQuantidade();
+                            double valorUnitario = produto.getValorDoProduto();
+                            double valorItem = quantidade * valorUnitario;
+                            System.out.println(produto.getNomeProduto() + " - Quantidade: " + quantidade + " - Valor Unitário: R$" + valorUnitario + " - Valor do Item: R$" + valorItem);
+                        }
+
+                        System.out.println("Valor total da venda: R$" + valorTotalVenda);
+                        System.out.println("______________________________________________");
+
+                        nextVendaId++;
+                    }
+                    break;
+
+                case 2:
+                    System.out.println("______________________________________________");
+                    System.out.println("Digite o ID da venda a ser cancelada: ");
+                    int idVendaCancelar = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Venda vendaParaCancelar = encontrarVendaPorID(vendas, idVendaCancelar);
+
+                    if (vendaParaCancelar != null) {
+                        int quantidadeCancelada = vendaParaCancelar.getQuantidadeTotal();
+                        boolean canceladaComSucesso = vendaParaCancelar.cancelarVenda(estoque, quantidadeCancelada);
+
+                        if (canceladaComSucesso) {
+                            System.out.println("Venda cancelada com sucesso!");
+                            System.out.println(quantidadeCancelada + " unidades retornadas ao estoque.");
+                            vendas.remove(vendaParaCancelar);
+                        } else {
+                            System.out.println("Erro ao cancelar a venda. Verifique o estoque.");
+                        }
+                    } else {
+                        System.out.println("Venda não encontrada.");
+                    }
+                    System.out.println("______________________________________________");
+                    break;
+
+                case 3:
+                    System.out.print("Digite o nome do cliente: ");
+                    String nomeCliente = scanner.nextLine();
+                    System.out.print("Digite o telefone do cliente: ");
+                    String telefoneCliente = scanner.nextLine();
+                    System.out.print("Digite o endereço do cliente: ");
+                    String enderecoCliente = scanner.nextLine();
+                    System.out.print("Digite o CPF do cliente: ");
+                    String cpfCliente = scanner.nextLine();
+                    System.out.print("Digite o email do cliente: ");
+                    String emailCliente = scanner.nextLine();
+
+                    boolean clienteExistente = verificarCliente(clientes, cpfCliente);
+
+                    if (clienteExistente) {
+                        System.out.println("Cliente já existe no sistema.");
+                    } else {
+                        Cliente novoCliente = new Cliente(nomeCliente, telefoneCliente, enderecoCliente, cpfCliente, emailCliente);
+                        clientes.add(novoCliente);
+                        System.out.println("Cliente cadastrado com sucesso!");
+                    }
+                    break;
+
+                
+                case 4:
+                    System.out.print("Digite o CPF do cliente a ser verificado: ");
+                    String cpfVerificar = scanner.nextLine();
+                    boolean clienteExiste = verificarCliente(clientes, cpfVerificar);
+                    if (clienteExiste) {
+                        System.out.println("Cliente encontrado no sistema.");
+                    } else {
+                        System.out.println("Cliente não encontrado no sistema.");
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Saindo do sistema.");
+                    scanner.close();
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+                    break;
+            }
+        }
+    }
 
     private static Funcionario criarFuncionario() {
         Scanner scanner = new Scanner(System.in);
@@ -522,8 +676,8 @@ public class Mercadinho {
         return null;
     }
 
-    public void login()  {
-        Administrador administrador=new Administrador("joao",1,"123") ;
+    public void login() {
+        Administrador administrador = new Administrador("joao", 1, "123");
         administradoresCadastrados.add(administrador);
         Scanner scan = new Scanner(System.in);
         String nome;
@@ -580,7 +734,7 @@ public class Mercadinho {
 
                     if (func.getSenha().equals(senha)) {
                         // Faça o que for necessário quando o login do funcionário for bem-sucedido
-                        //menuFuncionario(func);
+                        menuFuncionario(func);
                     } else {
                         System.out.println("Senha incorreta.");
                         login();
@@ -607,6 +761,7 @@ public class Mercadinho {
         }
         return null;
     }
+
     public Login encontrarLoginPorNomeUsuario(String nomeUsuario) {
         for (Login login : loginsCadastrados) {
             if (login.getNomeUsuario().equals(nomeUsuario)) {
@@ -625,25 +780,25 @@ public class Mercadinho {
         }
         return null;
     }
-    
-   private void SelecionarCaixa () {
-        Scanner scanner=new Scanner(System.in);
-       for (int i = 1; i <= 5; i++) {
-           Caixa caixa = new Caixa(i, new ArrayList<>(), new ArrayList<>(), new GerenciamentoFiscal(vendas));
-           caixas.add(caixa);
-       }
 
-       System.out.print("Digite o número do caixa: ");
-       int numeroCaixaEscolhido = scanner.nextInt();
-       Caixa caixaAtual = encontrarCaixaPorNumero(numeroCaixaEscolhido);
+    private void SelecionarCaixa() {
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 1; i <= 5; i++) {
+            Caixa caixa = new Caixa(i, new ArrayList<>(), new ArrayList<>(), new GerenciamentoFiscal(vendas));
+            caixas.add(caixa);
+        }
 
-       if (caixaAtual == null) {
-           System.out.println("Caixa não encontrado. Saindo do sistema.");
-           scanner.close();
-           System.exit(0);
-       }
+        System.out.print("Digite o número do caixa: ");
+        int numeroCaixaEscolhido = scanner.nextInt();
+        Caixa caixaAtual = encontrarCaixaPorNumero(numeroCaixaEscolhido);
 
-       System.out.println("Bem-vindo ao Caixa " + numeroCaixaEscolhido);
-   }
+        if (caixaAtual == null) {
+            System.out.println("Caixa não encontrado. Saindo do sistema.");
+            scanner.close();
+            System.exit(0);
+        }
+
+        System.out.println("Bem-vindo ao Caixa " + numeroCaixaEscolhido);
+    }
 
 }
