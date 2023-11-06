@@ -54,15 +54,7 @@ public class Login {
         setSenha(senha);
     }
 
-    public void verificarCadastro() {
-        if (getNome().equals("ADM") && getEmail().equals("admin@teste") && getSenha().equals("senha123")) {
-            System.out.println("Acesso aprovado ao administrador");
-        } else if (getNome().equals("Fun") && getEmail().equals("fun@teste") && getSenha().equals("senha456")) {
-            System.out.println("Acesso aprovado ao funcionário");
-        } else {
-            System.out.println("Acesso negado. Tente novamente.");
-        }
-    }
+  
 
     Object getNomeUsuario() {
         throw new UnsupportedOperationException("Not supported yet.");
