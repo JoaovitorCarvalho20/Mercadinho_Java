@@ -16,6 +16,9 @@ public class Caixa {
         this.vendasMensais = vendasMensais;
         this.gerenciamentoFiscal = gerenciamentoFiscal;
     }
+    public Caixa(){
+
+    }
 
     public int getNumeroCaixa() {
         return numeroCaixa;

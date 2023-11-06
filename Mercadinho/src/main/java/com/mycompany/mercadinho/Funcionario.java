@@ -4,6 +4,7 @@ public class Funcionario {
     private String nome;
     private int id; // Alterado para int
     private String senha;
+    
 
     public Funcionario(String nome, int id, String senha) { // Atualizado o construtor
         this.nome = nome;
