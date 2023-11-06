@@ -38,5 +38,5 @@ O projeto é organizado da seguinte forma:
 Contribuições são bem-vindas. Se você quiser contribuir para o projeto, sinta-se à vontade para criar um fork do repositório e enviar um pull request com suas melhorias.
 
 ## Licença
-
+Desenvolvido por João Vitor Aparecido Carvalho
 Este projeto está licenciado sob a [Licença MIT](LICENSE).
