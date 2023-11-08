@@ -5,13 +5,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A classe Estoque representa o estoque de produtos em um mercadinho.
+ */
 public class Estoque {
-    private Map<Produto, Integer> produtosQuantidade;
+    private Map<Produto, Integer> produtosQuantidade; // Um mapeamento de produtos para suas quantidades em estoque.
 
+    /**
+     * Construtor padrão que inicializa o mapa de produtosQuantidade.
+     */
     public Estoque() {
         produtosQuantidade = new HashMap<>();
     }
 
+    /**
+     * Adiciona a quantidade especificada de um produto ao estoque.
+     *
+     * @param produto    O produto a ser adicionado.
+     * @param quantidade A quantidade a ser adicionada.
+     */
     public void adicionarProduto(Produto produto, int quantidade) {
         if (quantidade <= 0) {
             System.out.println("A quantidade deve ser maior que zero.");
@@ -22,6 +34,12 @@ public class Estoque {
         System.out.println(quantidade + " unidades de " + produto.getNomeProduto() + " adicionadas ao estoque.");
     }
 
+    /**
+     * Remove a quantidade especificada de um produto do estoque, se disponível.
+     *
+     * @param produto    O produto a ser removido.
+     * @param quantidade A quantidade a ser removida.
+     */
     public void removerProduto(Produto produto, int quantidade) {
         if (quantidade <= 0) {
             System.out.println("A quantidade deve ser maior que zero.");
@@ -41,14 +59,23 @@ public class Estoque {
         }
     }
 
+    /**
+     * Verifica a quantidade de um produto no estoque.
+     *
+     * @param produto O produto a ser verificado.
+     * @return A quantidade em estoque do produto.
+     */
     public int verificarEstoque(Produto produto) {
         int quantidade = produtosQuantidade.getOrDefault(produto, 0);
         System.out.println("Quantidade de " + produto.getNomeProduto() + " em estoque: " + quantidade + " unidades.");
         return quantidade;
     }
 
+    /**
+     * Exibe o estoque atual, listando todos os produtos e suas quantidades em estoque.
+     */
     public void exibirEstoque() {
-        System.out.println("=== Estoque Atual ===");
+        System.out.println("---- Estoque Atual ----");
         for (Map.Entry<Produto, Integer> entry : produtosQuantidade.entrySet()) {
             Produto produto = entry.getKey();
             int quantidade = entry.getValue();
@@ -56,6 +83,12 @@ public class Estoque {
         }
     }
 
+    /**
+     * Adiciona a quantidade especificada de um produto ao estoque, com base no ID do produto.
+     *
+     * @param produtoId  O ID do produto a ser adicionado.
+     * @param quantidade A quantidade a ser adicionada.
+     */
     public void adicionarQuantidadePorID(int produtoId, int quantidade) {
         Produto produto = encontrarProdutoPorID(produtoId);
 
@@ -66,6 +99,12 @@ public class Estoque {
         }
     }
 
+    /**
+     * Encontra um produto no estoque com base no ID do produto.
+     *
+     * @param produtoId O ID do produto a ser encontrado.
+     * @return O produto encontrado ou null se não encontrado.
+     */
     public Produto encontrarProdutoPorID(int produtoId) {
         for (Produto produto : produtosQuantidade.keySet()) {
             if (produto.getId() == produtoId) {
@@ -75,6 +114,11 @@ public class Estoque {
         return null;
     }
 
+    /**
+     * Obtém uma lista de todos os produtos no estoque.
+     *
+     * @return Uma lista de produtos.
+     */
     public List<Produto> getProdutos() {
         List<Produto> listaProdutos = new ArrayList<>(produtosQuantidade.keySet());
         return listaProdutos;

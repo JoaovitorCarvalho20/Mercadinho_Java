@@ -1,36 +1,46 @@
 package com.mycompany.mercadinho;
- //A classe Clientedefine um tipo de dado abstrato para a criação da estrutura de classes de contas bancárias
 
+/**
+ * Esta é a classe que define um tipo de dado abstrato para a criação da estrutura de classes de contas bancárias.
+ */
 public class Cliente {
     private String nome;
     private String telefone;
     private String endereco;
     private String cpf;
     private String email;
-    
-// usar o private é interesante por conta da visibiidade,garante a segunça dos acessos e é usado para contruir o encapulamento  
-//Um método estático pertence à classe, não a instâncias individuais da classe.
-    private static int numCliente=0;
-// vantagen do uso so protectd acesso direto e permanencia nos filhos
-   protected  static int numCliente2=0;
-    
-   //Contrutor padrao, ele tem o intuito de caontar as instancias 
-    public Cliente(){
+
+    // Usar "private" é interessante para garantir a visibilidade e a segurança dos acessos, além de ser usado para construir o encapsulamento.
+    private static int numCliente = 0;
+
+    // A vantagem do uso de "protected" é o acesso direto e a permanência nos filhos.
+    protected static int numCliente2 = 0;
+
+    /**
+     * Construtor padrão de Cliente. Incrementa o número de clientes.
+     */
+    public Cliente() {
         numCliente++;
     }
-  
-    // Metodo que retorna a quantidade de clientes instanciados;
-    public static int getNumClientes(){
+
+    /**
+     * Obtém o número de clientes instanciados.
+     *
+     * @return O número de clientes instanciados.
+     */
+    public static int getNumClientes() {
         return numCliente;
     }
-     /* Construtor sobrecarregado da classe Cliente.
-     nome String que identifica o nome do cliente.
-     telefone String que identifica o telefone do cliente.
-     endereco String que identifica o endereço do cliente.
-     cpf String que identifica o CPF do cliente.
-    email String que indentifica o email do cliente.
-    */
 
+    /**
+     * Construtor sobrecarregado da classe Cliente.
+     *
+     * @param nome     O nome do cliente.
+     * @param telefone O telefone do cliente.
+     * @param endereco O endereço do cliente.
+     * @param cpf      O CPF do cliente.
+     * @param email    O email do cliente.
+     */
     public Cliente(String nome, String telefone, String endereco, String cpf, String email) {
         this.nome = nome;
         this.telefone = telefone;
@@ -38,69 +48,104 @@ public class Cliente {
         this.cpf = cpf;
         this.email = email;
     }
-// Metodo usado para acessar o nome do cliente e retorna o nome do cliente 
+
+    /**
+     * Obtém o nome do cliente.
+     *
+     * @return O nome do cliente.
+     */
     public String getNome() {
         return nome;
     }
-//Metodo usado para definir o nome do clente
-//nome Será repassado String com o nome do cliente a ser definido.
+
+    /**
+     * Define o nome do cliente.
+     *
+     * @param nome O novo nome do cliente.
+     */
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
-    
-// Metodo usado para acessar o telefone do cliente e retorna o nome do cliente 
+
+    /**
+     * Obtém o telefone do cliente.
+     *
+     * @return O telefone do cliente.
+     */
     public String getTelefone() {
         return telefone;
     }
-//Metodo usado para definir o telefone do clente
-//telefone Será repassado String com o telefone do cliente a ser definido.
+
+    /**
+     * Define o telefone do cliente.
+     *
+     * @param telefone O novo telefone do cliente.
+     */
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 
-    
- // Metodo usado para acessar o endereço do cliente e retorna o nome do cliente 
+    /**
+     * Obtém o endereço do cliente.
+     *
+     * @return O endereço do cliente.
+     */
     public String getEndereco() {
         return endereco;
     }
 
-//Metodo usado para definir o telefone do clente
-//endereço Será repassado String com o telefone do cliente a ser definido.
+    /**
+     * Define o endereço do cliente.
+     *
+     * @param endereco O novo endereço do cliente.
+     */
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
 
-   // Metodo usado para acessar o cpf do cliente e retorna o nome do cliente 
+    /**
+     * Obtém o CPF do cliente.
+     *
+     * @return O CPF do cliente.
+     */
     public String getCpf() {
         return cpf;
     }
-//Metodo usado para definir o cpf do clente
-//cpf Será repassado String com o cpf do cliente a ser definido.
+
+    /**
+     * Define o CPF do cliente.
+     *
+     * @param cpf O novo CPF do cliente.
+     */
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
-    
-// Metodo usado para acessar o email do cliente e retorna o nome do cliente 
+    /**
+     * Obtém o email do cliente.
+     *
+     * @return O email do cliente.
+     */
     public String getEmail() {
         return email;
     }
-    
-//Metodo usado para definir o email do clente
-//email Será repassado String com o email do cliente a ser definido.
+
+    /**
+     * Define o email do cliente.
+     *
+     * @param email O novo email do cliente.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-// metodo toString reescrito para retornar o nome telefone,endereço,cpf,email
-
+    /**
+     * Sobrescreve o método toString para retornar informações do cliente.
+     *
+     * @return Uma representação em formato de string do objeto Cliente.
+     */
     @Override
     public String toString() {
         return "Cliente{" + "nome=" + nome + ", telefone=" + telefone + ", endereco=" + endereco + ", cpf=" + cpf + ", email=" + email + '}';
     }
-    
-    
-    
-    
 }

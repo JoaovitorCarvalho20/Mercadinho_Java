@@ -4,13 +4,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * A classe GerenciamentoFiscal lida com o cálculo das vendas e informações fiscais relacionadas.
+ */
 public class GerenciamentoFiscal {
-    private List<Venda> vendas;
+    private List<Venda> vendas; // Lista de vendas registradas.
 
+    /**
+     * Construtor que inicializa a classe com a lista de vendas.
+     *
+     * @param vendas A lista de vendas registradas.
+     */
     public GerenciamentoFiscal(List<Venda> vendas) {
         this.vendas = vendas;
     }
 
+    /**
+     * Calcula o total das vendas em um determinado dia.
+     *
+     * @param data A data para a qual as vendas diárias devem ser calculadas.
+     * @return O valor total das vendas para o dia especificado.
+     */
     public double calcularVendasDiarias(Date data) {
         double totalVendas = 0;
         for (Venda venda : vendas) {
@@ -22,6 +36,13 @@ public class GerenciamentoFiscal {
         return totalVendas;
     }
 
+    /**
+     * Calcula o total das vendas em um determinado mês e ano.
+     *
+     * @param ano O ano para o qual as vendas mensais devem ser calculadas.
+     * @param mes O mês para o qual as vendas mensais devem ser calculadas.
+     * @return O valor total das vendas para o mês e ano especificados.
+     */
     public double calcularVendasMensais(int ano, int mes) {
         double totalVendas = 0;
         for (Venda venda : vendas) {
@@ -36,6 +57,12 @@ public class GerenciamentoFiscal {
         return totalVendas;
     }
 
+    /**
+     * Calcula o total das vendas em um determinado ano.
+     *
+     * @param ano O ano para o qual as vendas anuais devem ser calculadas.
+     * @return O valor total das vendas para o ano especificado.
+     */
     public double calcularVendasAnuais(int ano) {
         double totalVendas = 0;
         for (Venda venda : vendas) {
@@ -49,6 +76,13 @@ public class GerenciamentoFiscal {
         return totalVendas;
     }
 
+    /**
+     * Verifica se duas datas representam o mesmo dia.
+     *
+     * @param date1 A primeira data a ser comparada.
+     * @param date2 A segunda data a ser comparada.
+     * @return Verdadeiro se as datas representam o mesmo dia, caso contrário, falso.
+     */
     private boolean isSameDay(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
