@@ -2,78 +2,88 @@ package com.mycompany.mercadinho;
 
 import java.util.Scanner;
 
-// Declaração da classe Login
+/**
+ * A classe Login representa informações relacionadas ao login de um usuário.
+ */
 public class Login {
 
-    // Declaração de variáveis de instância privadas
-    private String nome;
-    private String email;
-    private String seenha;
+    private String nome; // Nome do usuário.
+    private String email; // Endereço de email do usuário.
+    private String senha; // Senha do usuário.
 
-    // Declaração de um objeto Scanner para entrada de dados
-    Scanner input = new Scanner(System.in);
+  
 
-    // Construtor da classe Login (não inicializa corretamente as variáveis)
+    /**
+     * Construtor padrão da classe Login.
+     * Inicializa o objeto, mas os campos nome, email e senha não estão definidos aqui.
+     */
     public Login() {
-        this.nome = nome;
+        this.nome = nome; // Definindo nome, email e senha do administrador
         this.email = email;
-        this.seenha = seenha;
+        this.senha = senha;
     }
 
-    // Métodos getters e setters para as variáveis nome, email e seenha
-    // Método para configurar o nome
+    /**
+     * Define o nome do usuário.
+     *
+     * @param nome O nome a ser definido para o usuário.
+     */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    // Método para obter o nome
+    /**
+     * Obtém o nome do usuário.
+     *
+     * @return O nome do usuário.
+     */
     public String getNome() {
         return nome;
     }
 
-    // Método para configurar o email
+    /**
+     * Define o endereço de email do usuário.
+     *
+     * @param email O endereço de email a ser definido para o usuário.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    // Método para obter o email
+    /**
+     * Obtém o endereço de email do usuário.
+     *
+     * @return O endereço de email do usuário.
+     */
     public String getEmail() {
         return email;
     }
 
-    // Método para configurar a senha (você escreveu "seenha" em vez de "senha")
-    public void setSeenha(String senha) {
-        this.seenha = senha;
+    /**
+     * Define a senha do usuário.
+     *
+     * @param senha A senha a ser definida para o usuário.
+     */
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
-    // Método para obter a senha (você escreveu "seenha" em vez de "senha")
-    public String getSeenha() {
-        return seenha;
+    /**
+     * Obtém a senha do usuário.
+     *
+     * @return A senha do usuário.
+     */
+    public String getSenha() {
+        return senha;
     }
 
-    // Método para realizar o cadastro do usuário
-    public void cadastro() {
-        System.out.println("Entre com o nome do usuário");
-        String nome = input.nextLine();
-        setNome(nome);
-
-        System.out.println("Entre com o email");
-        String email = input.next();
-        setEmail(email);
-
-        System.out.println("Entre com a senha");
-        String senha = input.next();
-        setSeenha(senha);
-    }
-
-    // Método para verificar o cadastro e conceder acesso com base nos valores fornecidos
-    public void verificarCadastro() {
-        if (getNome().equals("ADM") && getEmail().equals("adm@teste") && getSeenha().equals("senha123")) {
-            System.out.println("Acesso aprovado ao administrador");
-        } else if (getNome().equals("Fun") && getEmail().equals("fun@teste") && getSeenha().equals("senha456")) {
-            System.out.println("Acesso aprovado ao funcionário");
-        } else {
-            System.out.println("Acesso negado. Tente novamente.");
-        }
+    /**
+     * Este método não está implementado e lança uma exceção.
+     * Deve ser implementado adequadamente para realizar uma ação específica.
+     *
+     * @return Um objeto não suportado (UnsupportedOperationException).
+     */
+    Object getNomeUsuario() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
