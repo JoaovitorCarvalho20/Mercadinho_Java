@@ -12,6 +12,7 @@ public class Sistema {
         Mercadinho mercadinho = new Mercadinho();
 
         while (true) {
+            
             mercadinho.login();
         }
     }
