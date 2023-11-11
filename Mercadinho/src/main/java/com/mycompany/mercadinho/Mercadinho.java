@@ -845,7 +845,7 @@ public void login() {
 
     System.out.println("\n---------- SEJA BEM VINDO AO MERCADINHO DA GRA ----------\n");
     System.out.println("Logar como\n"
-            + "Adminstrador -> Digite 1\n"
+            +  "Adminstrador -> Digite 1\n"
             + "Funcionário  -> Digite 2");
     System.out.printf("Opção: ");
     opcao = scan.nextLine();
