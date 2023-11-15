@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 /**
  *
- * @author ianca
+ * @author iancarlos
  */
 public class ManipularJSON {
     
