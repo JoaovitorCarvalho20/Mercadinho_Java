@@ -350,7 +350,9 @@ public class Mercadinho {
                     Funcionario funcionario = criarFuncionario();
                     funcionarios.add(funcionario);
                     System.out.println("Funcionário criado com sucesso!");
+                    ManipularJSON.funcionarioToJsonFile(funcionarios);
                     break;
+                        
                 case 10:
                     System.out.println("Lista de Funcionários:");
                     for (Funcionario funcionarioS : funcionarios) {

@@ -20,10 +20,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-/**
- *
- * @author iancarlos
- */
+
 public class ManipularJSON {
     
     private static Gson gson;
@@ -35,7 +32,7 @@ public class ManipularJSON {
      */
     public static final void funcionarioToJsonFile (List<Funcionario> p)
     {
-        File funcionarioFile = new File("C:\\Users\\ianca\\Documents\\New Folder (3)\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\funcionario.json");
+        File funcionarioFile = new File("C:\\Users\\ianca\\Documents\\PastaSistemaMercado\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\funcionario.json");
         
         gson = new Gson();
         System.out.println(gson.toJson(p));
@@ -60,7 +57,7 @@ public class ManipularJSON {
     {
         Gson gson = new Gson();
         
-        try(FileReader reader = new FileReader("C:\\Users\\ianca\\Documents\\New Folder (3)\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\funcionario.json")){
+        try(FileReader reader = new FileReader("C:\\Users\\ianca\\Documents\\PastaSistemaMercado\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\funcionario.json")){
             Funcionario[] funcionarios = gson.fromJson(reader, Funcionario[].class);
             List<Funcionario> listafuncionarios = Arrays.asList(funcionarios); 
             
@@ -78,7 +75,7 @@ public class ManipularJSON {
      */
     public static final void clienteToJsonFile (List<Cliente> p)
     {
-        File clienteFile = new File("C:\\Users\\ianca\\Documents\\New Folder (3)\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\cliente.json");
+        File clienteFile = new File("C:\\Users\\ianca\\Documents\\PastaSistemaMercado\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\cliente.json");
         
         gson = new Gson();
         System.out.println(gson.toJson(p));
@@ -103,7 +100,7 @@ public class ManipularJSON {
     {
         Gson gson = new Gson();
         
-        try(FileReader reader = new FileReader("C:\\Users\\ianca\\Documents\\New Folder (3)\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\cliente.json")){
+        try(FileReader reader = new FileReader("C:\\Users\\ianca\\Documents\\PastaSistemaMercado\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\cliente.json")){
             Cliente[] clientes = gson.fromJson(reader, Cliente[].class);
             List<Cliente> listaclientes = Arrays.asList(clientes); 
             
@@ -120,9 +117,9 @@ public class ManipularJSON {
      * em um arquivo externo, salvando as informações.
      * @param p
      */
-    public static final void vendaToJsonFile (List<Cliente> p)
+    public static final void vendaToJsonFile (List<Venda> p)
     {
-        File vendaFile = new File("C:\\Users\\ianca\\Documents\\New Folder (3)\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\venda.json");
+        File vendaFile = new File("C:\\Users\\ianca\\Documents\\PastaSistemaMercado\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\venda.json");
         
         gson = new Gson();
         System.out.println(gson.toJson(p));
@@ -147,7 +144,7 @@ public class ManipularJSON {
     {
         Gson gson = new Gson();
         
-        try(FileReader reader = new FileReader("C:\\Users\\ianca\\Documents\\New Folder (3)\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\cliente.json")){
+        try(FileReader reader = new FileReader("C:\\Users\\ianca\\Documents\\PastaSistemaMercado\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\com\\mycompany\\mercadinho\\venda.json")){
             Venda[] vendas = gson.fromJson(reader, Venda[].class);
             List<Venda> listavendas = Arrays.asList(vendas); 
             
