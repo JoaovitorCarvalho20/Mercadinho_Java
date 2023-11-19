@@ -12,8 +12,8 @@ import Comparators.EstoqueComparator;
 
 public class Sistema {
 
-    private static void main(String[] args) {
-        // Instanciando o mercadinho usando o Sigleton que garante apenas uma instancia unica do Mercadinho
+    public static void main(String[] args) {
+        // Instanciando o mercadinho usando o Singleton que garante apenas uma instância única do Mercadinho
         Mercadinho mercadinho = Mercadinho.getInstance();
 
         Produto p1 = new Produto("Arroz", 10, "Alimentos");
@@ -68,10 +68,7 @@ public class Sistema {
          * Aparecido Carvalho
          */
         while (true) {
-            
             mercadinho.login();
-       
         }
-
     }
 }

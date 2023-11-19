@@ -8,11 +8,7 @@ package com.mycompany.mercadinho;
  *
  * @author ianca
  */
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.nio.charset.StandardCharsets;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileReader;

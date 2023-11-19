@@ -25,7 +25,7 @@ public class Mercadinho {
     private static Login usuarioLogado = null;
 
     // Lista de funcionários cadastrados no sistema
-    private List<Funcionario> funcionariosCadastrados;
+    private List<Funcionario> funcionariosCadastrados = new ArrayList<>();
 
     // Lista de administradores cadastrados no sistema
     private List<Administrador> administradoresCadastrados = new ArrayList<>();
