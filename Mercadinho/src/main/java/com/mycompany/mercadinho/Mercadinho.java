@@ -8,11 +8,14 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Calendar;
+import Comparators.ClienteComparator;
+import java.util.Collections;
 
 /**
  * Classe que representa o sistema de um mercadinho.
  */
 public class Mercadinho {
+    
 
     // Lista estática de 5 caixas
     private static List<Caixa> caixas = new ArrayList<>();
@@ -24,7 +27,7 @@ public class Mercadinho {
     private static Login usuarioLogado = null;
 
     // Lista de funcionários cadastrados no sistema
-    private List<Funcionario> funcionariosCadastrados=new ArrayList<>();
+    private List<Funcionario> funcionariosCadastrados = new ArrayList<>();
 
     // Lista de administradores cadastrados no sistema
     private List<Administrador> administradoresCadastrados = new ArrayList<>();
@@ -57,9 +60,49 @@ public class Mercadinho {
     private Caixa caixaAtual = new Caixa();
 
     /**
-     Metodo menu de administrador, ele define os cases que o ADM tem acesso 
+     * Metodo menu de administrador, ele define os cases que o ADM tem acesso
      */
-    
+    //instancia unica da classe 
+    private static Mercadinho instance;
+
+    /**
+     * Construtor de mercadinho que sera usado para o padrão de preojeto
+     * Sigleton
+     *
+     */
+    private Mercadinho() {
+
+    }
+
+    /**
+     * Método público estático para obter a instância única da classe mercadinho
+     */
+
+    public static Mercadinho getInstance() {
+        if (instance == null) {
+            instance = new Mercadinho();
+        }
+        return instance;
+    }
+
+    /**
+     *
+     * Inicialização Lazy com Sincronização (Método Tradicional): Neesta
+     * abordagem, a instância Singleton é inicializada apenas quando necessário
+     * (inicialização preguiçosa) a sincronização é usada para garantir que
+     * apenas uma thread por vez possa criar a instância.
+     *
+     *
+     * public class Mercadinho { private static Mercadinho instance;
+     *
+     * private Mercadinho() { // Construtor privado para evitar instanciamento
+     * externo }
+     *
+     * public static synchronized Mercadinho getInstance() { if (instance ==
+     * null) { instance = new Mercadinho(); } return instance; } }
+     *
+     */
+
     private void menuAdmin(Administrador adm) {
         while (true) {
             System.out.println("______________________ Menu ADM ________________________");
@@ -456,10 +499,12 @@ public class Mercadinho {
             }
         }
     }
- /**
-    Metodo menu de Funcionario, ele define os cases que o funcionario tem acesso 
+
+    /**
+     * Metodo menu de Funcionario, ele define os cases que o funcionario tem
+     * acesso
      */
-    
+
     private void menuFuncionario(Funcionario funcionario) {
         while (true) {
             System.out.println("______________________ Menu Funcionário ________________________");
@@ -612,7 +657,7 @@ public class Mercadinho {
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
                     break;
-                    
+
                 case 6:
                     System.out.println("Editar Cliente");
                     System.out.print("Digite o CPF do cliente a ser editado: ");
@@ -623,359 +668,364 @@ public class Mercadinho {
         }
     }
 
-   /**
- * Cria e retorna um novo funcionário com base nas informações inseridas pelo usuário.
- *
- * @return O funcionário criado.
- */
-private static Funcionario criarFuncionario() {
-    Scanner scanner = new Scanner(System.in);
-    System.out.print("Digite o nome do funcionário: ");
-    String nome = scanner.nextLine();
-    System.out.print("Digite a senha do funcionário: ");
-    String senha = scanner.nextLine();
-    System.out.print("O funcionário é um administrador? (true/false): ");
-    boolean isAdm = scanner.nextBoolean();
+    /**
+     * Cria e retorna um novo funcionário com base nas informações inseridas
+     * pelo usuário.
+     *
+     * @return O funcionário criado.
+     */
+    private static Funcionario criarFuncionario() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do funcionário: ");
+        String nome = scanner.nextLine();
+        System.out.print("Digite a senha do funcionário: ");
+        String senha = scanner.nextLine();
+        System.out.print("O funcionário é um administrador? (true/false): ");
+        boolean isAdm = scanner.nextBoolean();
 
-    int id = ultimoId; // Gere o ID automaticamente
-    ultimoId++; // Incremente o último ID usado
+        int id = ultimoId; // Gere o ID automaticamente
+        ultimoId++; // Incremente o último ID usado
 
-    if (isAdm) {
-        return new Administrador(nome, id, senha);
-    } else {
-        return new Funcionario(nome, id, senha);
-    }
-}
-
-
- /**
- * Permite editar as credenciais (nome e senha) de um funcionário.
- *
- * @param funcionario O funcionário cujas credenciais serão editadas.
- */
-private static void editarCredenciais(Funcionario funcionario) {
-    Scanner scanner = new Scanner(System.in);
-
-    System.out.println("Credenciais atuais do funcionário:");
-    System.out.println(funcionario);
-
-    int opcao;
-    do {
-        System.out.println("Escolha o que deseja editar:");
-        System.out.println("1. Nome");
-        System.out.println("2. Senha");
-        System.out.println("0. Sair");
-
-        opcao = Integer.parseInt(scanner.nextLine());
-
-        switch (opcao) {
-            case 1:
-                System.out.print("Digite o novo nome do funcionário: ");
-                String novoNome = scanner.nextLine();
-                funcionario.setNome(novoNome);
-                System.out.println("Nome do funcionário editado com sucesso!");
-                break;
-            case 2:
-                System.out.print("Digite a nova senha do funcionário: ");
-                String novaSenha = scanner.nextLine();
-                funcionario.setSenha(novaSenha);
-                System.out.println("Senha do funcionário editada com sucesso!");
-                break;
-            case 0:
-                System.out.println("Saindo do menu de edição.");
-                break;
-            default:
-                System.out.println("Opção inválida. Tente novamente.");
-                break;
-        }
-
-    } while (opcao != 0);
-}
-
-/**
- * Encontra um funcionário com base no ID especificado.
- *
- * @param funcionarios A lista de funcionários onde a pesquisa será realizada.
- * @param id           O ID do funcionário a ser encontrado.
- * @return O funcionário correspondente se encontrado; null, caso contrário.
- */
-private static Funcionario encontrarFuncionarioPorID(List<Funcionario> funcionarios, int id) {
-    for (Funcionario funcionario : funcionarios) {
-        if (funcionario.getId() == id) {
-            return funcionario;
+        if (isAdm) {
+            return new Administrador(nome, id, senha);
+        } else {
+            return new Funcionario(nome, id, senha);
         }
     }
-    return null;
-}
-
 
     /**
- * Encontra um produto no estoque com base no ID especificado.
- *
- * @param estoque    O estoque onde a pesquisa será realizada.
- * @param produtoId  O ID do produto a ser encontrado.
- * @return O produto correspondente se encontrado; null, caso contrário.
- */
-private static Produto encontrarProdutoPorID(Estoque estoque, int produtoId) {
-    for (Produto produto : estoque.getProdutos()) {
-        if (produto.getId() == produtoId) {
-            return produto;
-        }
-    }
-    return null;
-}
+     * Permite editar as credenciais (nome e senha) de um funcionário.
+     *
+     * @param funcionario O funcionário cujas credenciais serão editadas.
+     */
+    private static void editarCredenciais(Funcionario funcionario) {
+        Scanner scanner = new Scanner(System.in);
 
-/**
- * Encontra uma venda na lista de vendas com base no ID de venda especificado.
- *
- * @param vendas A lista de vendas onde a pesquisa será realizada.
- * @param idVenda O ID da venda a ser encontrado.
- * @return A venda correspondente se encontrada; null, caso contrário.
- */
-private static Venda encontrarVendaPorID(List<Venda> vendas, int idVenda) {
-    for (Venda venda : vendas) {
-        if (venda.getId() == idVenda) {
-            return venda;
-        }
-    }
-    return null;
-}
+        System.out.println("Credenciais atuais do funcionário:");
+        System.out.println(funcionario);
 
-/**
- * Verifica se um cliente com o CPF especificado está na lista de clientes.
- *
- * @param clientes     A lista de clientes onde a verificação será realizada.
- * @param cpfVerificar O CPF do cliente a ser verificado.
- * @return true se o cliente for encontrado na lista; false, caso contrário.
- */
-private static boolean verificarCliente(List<Cliente> clientes, String cpfVerificar) {
-    for (Cliente cliente : clientes) {
-        if (cliente.getCpf().equals(cpfVerificar)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/**
- * Permite editar informações de um cliente com base no CPF.
- *
- * @param clientes  A lista de clientes onde a edição será realizada.
- * @param cpfEditar O CPF do cliente a ser editado.
- */
-private static void editarClienteMenu(List<Cliente> clientes, String cpfEditar) {
-    for (Cliente cliente : clientes) {
-        if (cliente.getCpf().equals(cpfEditar)) {
-            Scanner scanner = new Scanner(System.in);
-
-            System.out.println("Cliente encontrado. O que você deseja editar?");
+        int opcao;
+        do {
+            System.out.println("Escolha o que deseja editar:");
             System.out.println("1. Nome");
-            System.out.println("2. Telefone");
-            System.out.println("3. Endereço");
-            System.out.println("4. Email");
-            System.out.println("5. Sair da edição");
+            System.out.println("2. Senha");
+            System.out.println("0. Sair");
 
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+            opcao = Integer.parseInt(scanner.nextLine());
 
             switch (opcao) {
                 case 1:
-                    System.out.print("Novo nome: ");
+                    System.out.print("Digite o novo nome do funcionário: ");
                     String novoNome = scanner.nextLine();
-                    cliente.setNome(novoNome);
-                    System.out.println("Nome atualizado com sucesso.");
+                    funcionario.setNome(novoNome);
+                    System.out.println("Nome do funcionário editado com sucesso!");
                     break;
                 case 2:
-                    System.out.print("Novo telefone: ");
-                    String novoTelefone = scanner.nextLine();
-                    cliente.setTelefone(novoTelefone);
-                    System.out.println("Telefone atualizado com sucesso.");
+                    System.out.print("Digite a nova senha do funcionário: ");
+                    String novaSenha = scanner.nextLine();
+                    funcionario.setSenha(novaSenha);
+                    System.out.println("Senha do funcionário editada com sucesso!");
                     break;
-                case 3:
-                    System.out.print("Novo endereço: ");
-                    String novoEndereco = scanner.nextLine();
-                    cliente.setEndereco(novoEndereco);
-                    System.out.println("Endereço atualizado com sucesso.");
-                    break;
-                case 4:
-                    System.out.print("Novo email: ");
-                    String novoEmail = scanner.nextLine();
-                    cliente.setEmail(novoEmail);
-                    System.out.println("Email atualizado com sucesso.");
-                    break;
-                case 5:
-                    System.out.println("Saindo da edição.");
+                case 0:
+                    System.out.println("Saindo do menu de edição.");
                     break;
                 default:
-                    System.out.println("Opção inválida.");
+                    System.out.println("Opção inválida. Tente novamente.");
+                    break;
             }
-            return; // Cliente encontrado e atualizado, podemos sair do loop
-        }
+
+        } while (opcao != 0);
     }
-    System.out.println("Cliente não encontrado.");
-}
 
     /**
- * Encontra um caixa com base no número do caixa especificado.
- *
- * @param numeroCaixa O número do caixa a ser encontrado.
- * @return O caixa correspondente se encontrado; null, caso contrário.
- */
-private static Caixa encontrarCaixaPorNumero(int numeroCaixa) {
-    for (Caixa caixa : caixas) {
-        if (caixa.getNumeroCaixa() == numeroCaixa) {
-            return caixa;
+     * Encontra um funcionário com base no ID especificado.
+     *
+     * @param funcionarios A lista de funcionários onde a pesquisa será
+     * realizada.
+     * @param id O ID do funcionário a ser encontrado.
+     * @return O funcionário correspondente se encontrado; null, caso contrário.
+     */
+    private static Funcionario encontrarFuncionarioPorID(List<Funcionario> funcionarios, int id) {
+        for (Funcionario funcionario : funcionarios) {
+            if (funcionario.getId() == id) {
+                return funcionario;
+            }
         }
+        return null;
     }
-    return null;
-}
 
-/**
- * Realiza o processo de login no sistema, permitindo que administradores e funcionários acessem as funcionalidades do sistema.
- */
-public void login() {
-    Administrador administrador = new Administrador("joao", 1, "123");
-    administradoresCadastrados.add(administrador);
-   Funcionario funcionario=new Funcionario("vitor",2,"456");
-   funcionariosCadastrados.add(funcionario);
-    Scanner scan = new Scanner(System.in);
-    String nome;
-    String senha;
-    String opcao;
+    /**
+     * Encontra um produto no estoque com base no ID especificado.
+     *
+     * @param estoque O estoque onde a pesquisa será realizada.
+     * @param produtoId O ID do produto a ser encontrado.
+     * @return O produto correspondente se encontrado; null, caso contrário.
+     */
+    private static Produto encontrarProdutoPorID(Estoque estoque, int produtoId) {
+        for (Produto produto : estoque.getProdutos()) {
+            if (produto.getId() == produtoId) {
+                return produto;
+            }
+        }
+        return null;
+    }
 
-    System.out.println("\n---------- SEJA BEM VINDO AO MERCADINHO DA GRA ----------\n");
-    System.out.println("Logar como\n"
-            +  "Adminstrador -> Digite 1\n"
-            + "Funcionário  -> Digite 2");
-    System.out.printf("Opção: ");
-    opcao = scan.nextLine();
+    /**
+     * Encontra uma venda na lista de vendas com base no ID de venda
+     * especificado.
+     *
+     * @param vendas A lista de vendas onde a pesquisa será realizada.
+     * @param idVenda O ID da venda a ser encontrado.
+     * @return A venda correspondente se encontrada; null, caso contrário.
+     */
+    private static Venda encontrarVendaPorID(List<Venda> vendas, int idVenda) {
+        for (Venda venda : vendas) {
+            if (venda.getId() == idVenda) {
+                return venda;
+            }
+        }
+        return null;
+    }
 
-    switch (opcao) {
-        case "1" -> {
-            System.out.println("\n---------- Login como Administrador ----------\n");
-            System.out.printf("Nome: ");
-            nome = scan.nextLine();
+    /**
+     * Verifica se um cliente com o CPF especificado está na lista de clientes.
+     *
+     * @param clientes A lista de clientes onde a verificação será realizada.
+     * @param cpfVerificar O CPF do cliente a ser verificado.
+     * @return true se o cliente for encontrado na lista; false, caso contrário.
+     */
+    private static boolean verificarCliente(List<Cliente> clientes, String cpfVerificar) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getCpf().equals(cpfVerificar)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-            // Encontre o administrador com o nome especificado
-            Administrador admin = encontrarAdministradorPorNome(nome);
+    /**
+     * Permite editar informações de um cliente com base no CPF.
+     *
+     * @param clientes A lista de clientes onde a edição será realizada.
+     * @param cpfEditar O CPF do cliente a ser editado.
+     */
+    private static void editarClienteMenu(List<Cliente> clientes, String cpfEditar) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getCpf().equals(cpfEditar)) {
+                Scanner scanner = new Scanner(System.in);
 
-            if (admin != null) {
-                System.out.println("Olá " + admin.getNome());
-                System.out.printf("Digite sua senha: ");
-                senha = scan.nextLine();
+                System.out.println("Cliente encontrado. O que você deseja editar?");
+                System.out.println("1. Nome");
+                System.out.println("2. Telefone");
+                System.out.println("3. Endereço");
+                System.out.println("4. Email");
+                System.out.println("5. Sair da edição");
 
-                if (admin.getSenha().equals(senha)) {
-                    // Faça o que for necessário quando o login do administrador for bem-sucedido
-                    SelecionarCaixa();
-                    menuAdmin(admin);
+                int opcao = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (opcao) {
+                    case 1:
+                        System.out.print("Novo nome: ");
+                        String novoNome = scanner.nextLine();
+                        cliente.setNome(novoNome);
+                        System.out.println("Nome atualizado com sucesso.");
+                        break;
+                    case 2:
+                        System.out.print("Novo telefone: ");
+                        String novoTelefone = scanner.nextLine();
+                        cliente.setTelefone(novoTelefone);
+                        System.out.println("Telefone atualizado com sucesso.");
+                        break;
+                    case 3:
+                        System.out.print("Novo endereço: ");
+                        String novoEndereco = scanner.nextLine();
+                        cliente.setEndereco(novoEndereco);
+                        System.out.println("Endereço atualizado com sucesso.");
+                        break;
+                    case 4:
+                        System.out.print("Novo email: ");
+                        String novoEmail = scanner.nextLine();
+                        cliente.setEmail(novoEmail);
+                        System.out.println("Email atualizado com sucesso.");
+                        break;
+                    case 5:
+                        System.out.println("Saindo da edição.");
+                        break;
+                    default:
+                        System.out.println("Opção inválida.");
+                }
+                return; // Cliente encontrado e atualizado, podemos sair do loop
+            }
+        }
+        System.out.println("Cliente não encontrado.");
+    }
+
+    /**
+     * Encontra um caixa com base no número do caixa especificado.
+     *
+     * @param numeroCaixa O número do caixa a ser encontrado.
+     * @return O caixa correspondente se encontrado; null, caso contrário.
+     */
+    private static Caixa encontrarCaixaPorNumero(int numeroCaixa) {
+        for (Caixa caixa : caixas) {
+            if (caixa.getNumeroCaixa() == numeroCaixa) {
+                return caixa;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Realiza o processo de login no sistema, permitindo que administradores e
+     * funcionários acessem as funcionalidades do sistema.
+     */
+    public void login() {
+        Administrador administrador = new Administrador("joao", 1, "123");
+        administradoresCadastrados.add(administrador);
+        Funcionario funcionario = new Funcionario("vitor", 2, "456");
+        funcionariosCadastrados.add(funcionario);
+        Scanner scan = new Scanner(System.in);
+        String nome;
+        String senha;
+        String opcao;
+
+        System.out.println("\n---------- SEJA BEM VINDO AO MERCADINHO DA GRA ----------\n");
+        System.out.println("Logar como\n"
+                + "Adminstrador -> Digite 1\n"
+                + "Funcionário  -> Digite 2");
+        System.out.printf("Opção: ");
+        opcao = scan.nextLine();
+
+        switch (opcao) {
+            case "1" -> {
+                System.out.println("\n---------- Login como Administrador ----------\n");
+                System.out.printf("Nome: ");
+                nome = scan.nextLine();
+
+                // Encontre o administrador com o nome especificado
+                Administrador admin = encontrarAdministradorPorNome(nome);
+
+                if (admin != null) {
+                    System.out.println("Olá " + admin.getNome());
+                    System.out.printf("Digite sua senha: ");
+                    senha = scan.nextLine();
+
+                    if (admin.getSenha().equals(senha)) {
+                        // Faça o que for necessário quando o login do administrador for bem-sucedido
+                        SelecionarCaixa();
+                        menuAdmin(admin);
+                    } else {
+                        System.out.println("Senha incorreta.");
+                        login();
+                    }
                 } else {
-                    System.out.println("Senha incorreta.");
+                    System.out.println("Não existe um administrador com esse nome em nossa base de dados.");
+                    System.out.println("Tente novamente...");
                     login();
                 }
-            } else {
-                System.out.println("Não existe um administrador com esse nome em nossa base de dados.");
-                System.out.println("Tente novamente...");
+            }
+            case "2" -> {
+                System.out.println("\n---------- Login como Funcionário ----------\n");
+                System.out.println("Nome: ");
+                nome = scan.nextLine();
+
+                // Encontre o funcionário com o nome especificado
+                Funcionario func = encontrarFuncionarioPorNome(nome);
+
+                if (func != null) {
+                    System.out.println("Olá " + func.getNome());
+                    System.out.printf("Digite sua senha: ");
+                    senha = scan.nextLine();
+
+                    if (func.getSenha().equals(senha)) {
+                        // Faça o que for necessário quando o login do funcionário for bem-sucedido
+                        menuFuncionario(func);
+                    } else {
+                        System.out.println("Senha incorreta.");
+                        login();
+                    }
+                } else {
+                    System.out.println("Não existe um funcionário com esse nome em nossa base de dados.");
+                    System.out.println("Tente novamente...");
+                    login();
+                }
+            }
+            default -> {
+                System.out.println("Não foi encontrada a opção");
                 login();
             }
         }
-        case "2" -> {
-            System.out.println("\n---------- Login como Funcionário ----------\n");
-            System.out.println("Nome: ");
-            nome = scan.nextLine();
+    }
 
-            // Encontre o funcionário com o nome especificado
-            Funcionario func = encontrarFuncionarioPorNome(nome);
-
-            if (func != null) {
-                System.out.println("Olá " + func.getNome());
-                System.out.printf("Digite sua senha: ");
-                senha = scan.nextLine();
-
-                if (func.getSenha().equals(senha)) {
-                    // Faça o que for necessário quando o login do funcionário for bem-sucedido
-                    menuFuncionario(func);
-                } else {
-                    System.out.println("Senha incorreta.");
-                    login();
-                }
-            } else {
-                System.out.println("Não existe um funcionário com esse nome em nossa base de dados.");
-                System.out.println("Tente novamente...");
-                login();
+    /**
+     * Encontra um administrador por nome na lista de administradores
+     * cadastrados.
+     *
+     * @param nome O nome do administrador a ser encontrado.
+     * @return O administrador correspondente se encontrado; null, caso
+     * contrário.
+     */
+    private Administrador encontrarAdministradorPorNome(String nome) {
+        for (Administrador admin : administradoresCadastrados) {
+            if (admin.getNome().equals(nome)) {
+                return admin;
             }
         }
-        default -> {
-            System.out.println("Não foi encontrada a opção");
-            login();
+        return null;
+    }
+
+    /**
+     * Encontra um login com base no nome de usuário especificado na lista de
+     * logins cadastrados.
+     *
+     * @param nomeUsuario O nome de usuário a ser encontrado.
+     * @return O login correspondente se encontrado; null, caso contrário.
+     */
+    public Login encontrarLoginPorNomeUsuario(String nomeUsuario) {
+        for (Login login : loginsCadastrados) {
+            if (login.getNomeUsuario().equals(nomeUsuario)) {
+                return login;
+            }
         }
+        return null;
     }
-}
 
-/**
- * Encontra um administrador por nome na lista de administradores cadastrados.
- *
- * @param nome O nome do administrador a ser encontrado.
- * @return O administrador correspondente se encontrado; null, caso contrário.
- */
-private Administrador encontrarAdministradorPorNome(String nome) {
-    for (Administrador admin : administradoresCadastrados) {
-        if (admin.getNome().equals(nome)) {
-            return admin;
+    /**
+     * Encontra um funcionário por nome na lista de funcionários cadastrados.
+     *
+     * @param nome O nome do funcionário a ser encontrado.
+     * @return O funcionário correspondente se encontrado; null, caso contrário.
+     */
+    private Funcionario encontrarFuncionarioPorNome(String nome) {
+        for (Funcionario func : funcionariosCadastrados) {
+            if (func.getNome().equals(nome)) {
+                return func;
+            }
         }
+        return null;
     }
-    return null;
-}
 
-/**
- * Encontra um login com base no nome de usuário especificado na lista de logins cadastrados.
- *
- * @param nomeUsuario O nome de usuário a ser encontrado.
- * @return O login correspondente se encontrado; null, caso contrário.
- */
-public Login encontrarLoginPorNomeUsuario(String nomeUsuario) {
-    for (Login login : loginsCadastrados) {
-        if (login.getNomeUsuario().equals(nomeUsuario)) {
-            return login;
+    /**
+     * Permite ao usuário selecionar um caixa para operação.
+     */
+    private void SelecionarCaixa() {
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 1; i <= 5; i++) {
+            Caixa caixa = new Caixa(i, new ArrayList<>(), new ArrayList<>(), new GerenciamentoFiscal(vendas));
+            caixas.add(caixa);
         }
-    }
-    return null;
-}
 
-/**
- * Encontra um funcionário por nome na lista de funcionários cadastrados.
- *
- * @param nome O nome do funcionário a ser encontrado.
- * @return O funcionário correspondente se encontrado; null, caso contrário.
- */
-private Funcionario encontrarFuncionarioPorNome(String nome) {
-    for (Funcionario func : funcionariosCadastrados) {
-        if (func.getNome().equals(nome)) {
-            return func;
+        System.out.print("Digite o número do caixa: ");
+        int numeroCaixaEscolhido = scanner.nextInt();
+        Caixa caixaAtual = encontrarCaixaPorNumero(numeroCaixaEscolhido);
+
+        if (caixaAtual == null) {
+            System.out.println("Caixa não encontrado. Saindo do sistema.");
+            scanner.close();
+            System.exit(0);
         }
+
+        System.out.println("Bem-vindo ao Caixa " + numeroCaixaEscolhido);
     }
-    return null;
-}
-
-/**
- * Permite ao usuário selecionar um caixa para operação.
- */
-private void SelecionarCaixa() {
-    Scanner scanner = new Scanner(System.in);
-    for (int i = 1; i <= 5; i++) {
-        Caixa caixa = new Caixa(i, new ArrayList<>(), new ArrayList<>(), new GerenciamentoFiscal(vendas));
-        caixas.add(caixa);
-    }
-
-    System.out.print("Digite o número do caixa: ");
-    int numeroCaixaEscolhido = scanner.nextInt();
-    Caixa caixaAtual = encontrarCaixaPorNumero(numeroCaixaEscolhido);
-
-    if (caixaAtual == null) {
-        System.out.println("Caixa não encontrado. Saindo do sistema.");
-        scanner.close();
-        System.exit(0);
-    }
-
-    System.out.println("Bem-vindo ao Caixa " + numeroCaixaEscolhido);
-}
 }

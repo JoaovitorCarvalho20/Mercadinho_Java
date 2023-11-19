@@ -9,7 +9,7 @@ import java.util.Map;
  * A classe Estoque representa o estoque de produtos em um mercadinho.
  */
 public class Estoque {
-    private Map<Produto, Integer> produtosQuantidade; // Um mapeamento de produtos para suas quantidades em estoque.
+    public Map<Produto, Integer> produtosQuantidade; // Um mapeamento de produtos para suas quantidades em estoque.
 
     /**
      * Construtor padrão que inicializa o mapa de produtosQuantidade.
