@@ -1,20 +1,21 @@
 package com.mycompany.mercadinho;
 
 import Comparators.ClienteComparator;
-import Comparators.EstoqueComparator;
+
 import java.util.ArrayList;
 
 import java.util.Collections;
+
 import java.util.List;
+
+import Comparators.EstoqueComparator;
 
 public class Sistema {
 
-    public static void main(String[] args) {
+    private static void main(String[] args) {
         // Instanciando o mercadinho usando o Sigleton que garante apenas uma instancia unica do Mercadinho
         Mercadinho mercadinho = Mercadinho.getInstance();
-        
-        
-        
+
         Produto p1 = new Produto("Arroz", 10, "Alimentos");
         Produto p2 = new Produto("Feijão", 13, "Alimentos");
         Produto p3 = new Produto("Macarrão", 14, "Alimentos");
@@ -62,8 +63,15 @@ public class Sistema {
             System.out.println(cliente);
         }
 
+        /**
+         * Esta é a classe principal do sistema do Mercadinho. Autor: João Vitor
+         * Aparecido Carvalho
+         */
         while (true) {
+            
             mercadinho.login();
+       
         }
+
     }
 }

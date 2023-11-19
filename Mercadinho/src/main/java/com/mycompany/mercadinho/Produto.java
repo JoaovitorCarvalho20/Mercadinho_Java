@@ -5,7 +5,7 @@ package com.mycompany.mercadinho;
  * Ela define os atributos nomeProduto, valorDoProduto, id, categoria, e um atributo estático contador que conta
  * quantas instâncias de Produto foram criadas.
  */
-public class Produto  {
+public class Produto {
     private static int contador = 0;
     private String nomeProduto;
     private double valorDoProduto;

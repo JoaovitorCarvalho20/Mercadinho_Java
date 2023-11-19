@@ -1,6 +1,6 @@
 package com.mycompany.mercadinho;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -8,8 +8,6 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Calendar;
-import Comparators.ClienteComparator;
-import java.util.Collections;
 
 /**
  * Classe que representa o sistema de um mercadinho.
@@ -27,7 +25,7 @@ public class Mercadinho {
     private static Login usuarioLogado = null;
 
     // Lista de funcionários cadastrados no sistema
-    private List<Funcionario> funcionariosCadastrados = new ArrayList<>();
+    private List<Funcionario> funcionariosCadastrados;
 
     // Lista de administradores cadastrados no sistema
     private List<Administrador> administradoresCadastrados = new ArrayList<>();
@@ -393,6 +391,7 @@ public class Mercadinho {
                     Funcionario funcionario = criarFuncionario();
                     funcionarios.add(funcionario);
                     System.out.println("Funcionário criado com sucesso!");
+                    ManipularJSON.funcionarioToJsonFile(funcionarios);
                     break;
                 case 10:
                     System.out.println("Lista de Funcionários:");
@@ -1029,3 +1028,6 @@ public class Mercadinho {
         System.out.println("Bem-vindo ao Caixa " + numeroCaixaEscolhido);
     }
 }
+
+
+ 
