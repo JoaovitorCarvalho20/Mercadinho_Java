@@ -1,6 +1,5 @@
 package com.mycompany.mercadinho;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,7 +12,6 @@ import java.util.Calendar;
  * Classe que representa o sistema de um mercadinho.
  */
 public class Mercadinho {
-    
 
     // Lista estática de 5 caixas
     private static List<Caixa> caixas = new ArrayList<>();
@@ -49,7 +47,7 @@ public class Mercadinho {
     private List<Cliente> clientes = new ArrayList<>();
 
     // Lista de funcionários do mercadinho
-    private List<Funcionario> funcionarios = new ArrayList<>();
+    //private List<Funcionario> funcionarios = new ArrayList<>();
 
     // Próximo ID de venda a ser utilizado
     private int nextVendaId = 1;
@@ -75,7 +73,6 @@ public class Mercadinho {
     /**
      * Método público estático para obter a instância única da classe mercadinho
      */
-
     public static Mercadinho getInstance() {
         if (instance == null) {
             instance = new Mercadinho();
@@ -100,7 +97,6 @@ public class Mercadinho {
      * null) { instance = new Mercadinho(); } return instance; } }
      *
      */
-
     private void menuAdmin(Administrador adm) {
         while (true) {
             System.out.println("______________________ Menu ADM ________________________");
@@ -389,19 +385,20 @@ public class Mercadinho {
 
                 case 9:
                     Funcionario funcionario = criarFuncionario();
-                    funcionarios.add(funcionario);
+                    funcionariosCadastrados.add(funcionario);
                     System.out.println("Funcionário criado com sucesso!");
-                    ManipularJSON.funcionarioToJsonFile(funcionarios);
+                    Manipularjson.Escreverfuncionario(funcionariosCadastrados);
+
                     break;
                 case 10:
                     System.out.println("Lista de Funcionários:");
-                    for (Funcionario funcionarioS : funcionarios) {
+                    for (Funcionario funcionarioS : funcionariosCadastrados) {
                         System.out.println("ID: " + funcionarioS.getId() + ", Nome: " + funcionarioS.getNome());
                     }
 
                     System.out.print("Digite o ID do funcionário a ser editado: ");
                     int idEditar = Integer.parseInt(scanner.nextLine());
-                    Funcionario funcionarioParaEditar = encontrarFuncionarioPorID(funcionarios, idEditar);
+                    Funcionario funcionarioParaEditar = encontrarFuncionarioPorID(funcionariosCadastrados, idEditar);
                     if (funcionarioParaEditar != null) {
                         editarCredenciais(funcionarioParaEditar);
                         System.out.println("Credenciais do funcionário editadas com sucesso!");
@@ -503,7 +500,6 @@ public class Mercadinho {
      * Metodo menu de Funcionario, ele define os cases que o funcionario tem
      * acesso
      */
-
     private void menuFuncionario(Funcionario funcionario) {
         while (true) {
             System.out.println("______________________ Menu Funcionário ________________________");
@@ -673,7 +669,13 @@ public class Mercadinho {
      *
      * @return O funcionário criado.
      */
+   
+    
+    
+    
     private static Funcionario criarFuncionario() {
+      
+        
         Scanner scanner = new Scanner(System.in);
         System.out.print("Digite o nome do funcionário: ");
         String nome = scanner.nextLine();
@@ -681,16 +683,19 @@ public class Mercadinho {
         String senha = scanner.nextLine();
         System.out.print("O funcionário é um administrador? (true/false): ");
         boolean isAdm = scanner.nextBoolean();
-
-        int id = ultimoId; // Gere o ID automaticamente
+        
+        int id = ultimoId = 1; // Gere o ID automaticamente
         ultimoId++; // Incremente o último ID usado
+       
 
         if (isAdm) {
-            return new Administrador(nome, id, senha);
+              return new Administrador(nome, id, senha);
         } else {
-            return new Funcionario(nome, id, senha);
+              return new Funcionario(nome,id,senha);
         }
+            
     }
+     
 
     /**
      * Permite editar as credenciais (nome e senha) de um funcionário.
@@ -879,11 +884,25 @@ public class Mercadinho {
      * Realiza o processo de login no sistema, permitindo que administradores e
      * funcionários acessem as funcionalidades do sistema.
      */
+    
+     private List<Funcionario> carregarFuncionariosDoJson() {
+        List<Funcionario> funcionariosCadastrados = Manipularjson.LerFuncionario();
+        if (funcionariosCadastrados == null) {
+            System.out.println("Erro ao ler os dados dos funcionários.");
+        }
+        return funcionariosCadastrados;
+    }
+    
     public void login() {
+        List<Funcionario> funcionariosCadastrados = carregarFuncionariosDoJson();
+
+        
         Administrador administrador = new Administrador("joao", 1, "123");
         administradoresCadastrados.add(administrador);
         Funcionario funcionario = new Funcionario("vitor", 2, "456");
         funcionariosCadastrados.add(funcionario);
+       
+     
         Scanner scan = new Scanner(System.in);
         String nome;
         String senha;
@@ -1027,7 +1046,5 @@ public class Mercadinho {
 
         System.out.println("Bem-vindo ao Caixa " + numeroCaixaEscolhido);
     }
+
 }
-
-
- 

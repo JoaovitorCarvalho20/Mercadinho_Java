@@ -12,7 +12,7 @@ public class Caixa {
     private List<Venda> vendasMensais; // Lista de vendas mensais.
     private GerenciamentoFiscal gerenciamentoFiscal; // Gerenciamento fiscal do caixa.
     private Funcionario  funcionarioResponsavel; // Funcionário responsável pelo caixa.
-
+ 
     /**
      * Construtor parametrizado que cria uma instância de Caixa com informações iniciais.
      *

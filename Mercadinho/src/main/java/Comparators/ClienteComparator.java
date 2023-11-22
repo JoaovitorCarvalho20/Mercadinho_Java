@@ -13,7 +13,6 @@ import java.util.Comparator;
  * Essa classe implementa a interface Comparator, permitindo a comparação de objetos Cliente.
  */
 public class ClienteComparator implements Comparator<Cliente> {
-
     /**
      * Compara dois objetos Cliente com base no CPF.
      *
