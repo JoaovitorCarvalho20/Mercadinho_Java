@@ -387,8 +387,11 @@ public class Mercadinho {
                     Funcionario funcionario = criarFuncionario();
                     funcionariosCadastrados.add(funcionario);
                     System.out.println("Funcionário criado com sucesso!");
-                    Manipularjson.Escreverfuncionario(funcionariosCadastrados);
-
+                    Manipularjson escrever=new Manipularjson();
+                      
+                    escrever.Escreverfuncionario(funcionariosCadastrados);
+ 
+                    
                     break;
                 case 10:
                     System.out.println("Lista de Funcionários:");
