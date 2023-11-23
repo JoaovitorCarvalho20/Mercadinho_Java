@@ -48,7 +48,6 @@ public class Mercadinho {
 
     // Lista de funcionários do mercadinho
     //private List<Funcionario> funcionarios = new ArrayList<>();
-
     // Próximo ID de venda a ser utilizado
     private int nextVendaId = 1;
 
@@ -386,12 +385,18 @@ public class Mercadinho {
                 case 9:
                     Funcionario funcionario = criarFuncionario();
                     funcionariosCadastrados.add(funcionario);
+                    administradoresCadastrados.add(administrador);
+
                     System.out.println("Funcionário criado com sucesso!");
-                    Manipularjson escrever=new Manipularjson();
-                      
-                    escrever.Escreverfuncionario(funcionariosCadastrados);
- 
-                    
+
+                    Manipularjson escreverFuncionario = new Manipularjson();
+
+                    escreverFuncionario.Escreverfuncionario(funcionariosCadastrados);
+
+                    Manipularjson escreverAdministrador = new Manipularjson();
+
+                    escreverAdministrador.EscreverAdministrador(administradoresCadastrados);
+
                     break;
                 case 10:
                     System.out.println("Lista de Funcionários:");
@@ -672,13 +677,7 @@ public class Mercadinho {
      *
      * @return O funcionário criado.
      */
-   
-    
-    
-    
     private static Funcionario criarFuncionario() {
-      
-        
         Scanner scanner = new Scanner(System.in);
         System.out.print("Digite o nome do funcionário: ");
         String nome = scanner.nextLine();
@@ -686,19 +685,16 @@ public class Mercadinho {
         String senha = scanner.nextLine();
         System.out.print("O funcionário é um administrador? (true/false): ");
         boolean isAdm = scanner.nextBoolean();
-        
-        int id = ultimoId = 1; // Gere o ID automaticamente
-        ultimoId++; // Incremente o último ID usado
-       
+
+        int id = ultimoId; // Use o valor atual de ultimoId como ID
+        ultimoId++; // Incremente o último ID usado para o próximo funcionário
 
         if (isAdm) {
-              return new Administrador(nome, id, senha);
+            return new Administrador(nome, id, senha);
         } else {
-              return new Funcionario(nome,id,senha);
+            return new Funcionario(nome, id, senha);
         }
-            
     }
-     
 
     /**
      * Permite editar as credenciais (nome e senha) de um funcionário.
@@ -887,25 +883,26 @@ public class Mercadinho {
      * Realiza o processo de login no sistema, permitindo que administradores e
      * funcionários acessem as funcionalidades do sistema.
      */
-    
-     private List<Funcionario> carregarFuncionariosDoJson() {
+    private List<Funcionario> carregarFuncionariosDoJson() {
         List<Funcionario> funcionariosCadastrados = Manipularjson.LerFuncionario();
         if (funcionariosCadastrados == null) {
             System.out.println("Erro ao ler os dados dos funcionários.");
         }
         return funcionariosCadastrados;
     }
-    
-    public void login() {
-        List<Funcionario> funcionariosCadastrados = carregarFuncionariosDoJson();
 
-        
-        Administrador administrador = new Administrador("joao", 1, "123");
-        administradoresCadastrados.add(administrador);
-        Funcionario funcionario = new Funcionario("vitor", 2, "456");
-        funcionariosCadastrados.add(funcionario);
-       
-     
+    private List<Administrador> carregarAdministradorDoJson() {
+        List<Administrador> AdministradoresCadastrados = Manipularjson.LerAdministrador();
+        if (AdministradoresCadastrados == null) {
+            System.out.println("Erro ao ler os dados dos funcionários.");
+        }
+        return AdministradoresCadastrados;
+    }
+
+    public void login() {
+        funcionariosCadastrados = carregarFuncionariosDoJson();
+        administradoresCadastrados = carregarAdministradorDoJson();
+
         Scanner scan = new Scanner(System.in);
         String nome;
         String senha;
