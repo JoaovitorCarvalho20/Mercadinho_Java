@@ -284,6 +284,9 @@ public class Mercadinho {
                     break;
 
                 case 5:
+
+                    Manipularjson manipularjson = new Manipularjson();
+
                     System.out.print("Digite o nome do cliente: ");
                     String nomeCliente = scanner.nextLine();
                     System.out.print("Digite o telefone do cliente: ");
@@ -303,18 +306,23 @@ public class Mercadinho {
                         Cliente novoCliente = new Cliente(nomeCliente, telefoneCliente, enderecoCliente, cpfCliente, emailCliente);
                         clientes.add(novoCliente);
                         System.out.println("Cliente cadastrado com sucesso!");
+
+                        // Chamada para salvar a lista atualizada
+                        Manipularjson.EscreverCliente(clientes);
                     }
                     break;
 
                 case 6:
                     System.out.print("Digite o CPF do cliente a ser verificado: ");
                     String cpfVerificar = scanner.nextLine();
+                    Manipularjson.LerCliente();
                     boolean clienteExiste = verificarCliente(clientes, cpfVerificar);
                     if (clienteExiste) {
                         System.out.println("Cliente encontrado no sistema.");
                     } else {
                         System.out.println("Cliente não encontrado no sistema.");
                     }
+
                     break;
 
                 case 7:
@@ -502,10 +510,23 @@ public class Mercadinho {
                     break;
 
                 case 13:
-                    System.out.println("Editar Cliente");
+                        System.out.println("Editar Cliente");
                     System.out.print("Digite o CPF do cliente a ser editado: ");
                     String cpfEditar = scanner.nextLine();
-                    editarClienteMenu(clientes, cpfEditar);
+
+                    // Inicializar a lista de clientes chamando a função LerCliente
+                    List<Cliente> cliente = Manipularjson.LerCliente();
+
+                    // Verificar se a lista de clientes foi carregada corretamente
+                    if (cliente != null) {
+                        // Chamar a função de edição do cliente
+                        editarClienteMenu(cliente, cpfEditar);
+
+                        // Salvar a lista atualizada no arquivo JSON
+                        Manipularjson.EscreverCliente(cliente);
+                    } else {
+                        System.out.println("Erro ao carregar a lista de clientes.");
+                    }
                     break;
             }
         }
@@ -644,12 +665,15 @@ public class Mercadinho {
                         Cliente novoCliente = new Cliente(nomeCliente, telefoneCliente, enderecoCliente, cpfCliente, emailCliente);
                         clientes.add(novoCliente);
                         System.out.println("Cliente cadastrado com sucesso!");
+                        Manipularjson.EscreverCliente(clientes);
                     }
                     break;
 
                 case 4:
                     System.out.print("Digite o CPF do cliente a ser verificado: ");
                     String cpfVerificar = scanner.nextLine();
+
+                    List<Cliente> clientes = Manipularjson.LerCliente();
                     boolean clienteExiste = verificarCliente(clientes, cpfVerificar);
                     if (clienteExiste) {
                         System.out.println("Cliente encontrado no sistema.");
@@ -672,8 +696,22 @@ public class Mercadinho {
                     System.out.println("Editar Cliente");
                     System.out.print("Digite o CPF do cliente a ser editado: ");
                     String cpfEditar = scanner.nextLine();
-                    editarClienteMenu(clientes, cpfEditar);
+
+                    // Inicializar a lista de clientes chamando a função LerCliente
+                    List<Cliente> cliente = Manipularjson.LerCliente();
+
+                    // Verificar se a lista de clientes foi carregada corretamente
+                    if (cliente != null) {
+                        // Chamar a função de edição do cliente
+                        editarClienteMenu(cliente, cpfEditar);
+
+                        // Salvar a lista atualizada no arquivo JSON
+                        Manipularjson.EscreverCliente(cliente);
+                    } else {
+                        System.out.println("Erro ao carregar a lista de clientes.");
+                    }
                     break;
+
             }
         }
     }
@@ -1006,22 +1044,23 @@ public class Mercadinho {
      *
      * @param nomeUsuario O nome de usuário a ser encontrado.
      * @return O login correspondente se encontrado; null, caso contrário.
-   Entidades:
-
-Cliente (cliente_id, nome, telefone, endereço)
-Agendamento (agendamento_id, data, serviço_id, cliente_id)
-Barbeiro (barbeiro_id, nome, especialidade)
-Serviço (serviço_id, nome, tipo, preço)
-Produto (produto_id, nome, marca)
-Relacionamentos:
-
-Um cliente pode ter vários agendamentos (relacionamento 1:N entre Cliente e Agendamento)
-Um agendamento é realizado por um cliente (relacionamento N:1 entre Cliente e Agendamento)
-Um agendamento é associado a um serviço (relacionamento N:1 entre Serviço e Agendamento)
-Um serviço é executado por um barbeiro em um agendamento (relacionamento N:1 entre Barbeiro, Agendamento, e Serviço)
-Um serviço pode envolver vários produtos e um produto pode ser utilizado em vários serviços (relacionamento N:N entre Serviço e Produto)
-
-    /**
+     * Entidades:
+     *
+     * Cliente (cliente_id, nome, telefone, endereço) Agendamento
+     * (agendamento_id, data, serviço_id, cliente_id) Barbeiro (barbeiro_id,
+     * nome, especialidade) Serviço (serviço_id, nome, tipo, preço) Produto
+     * (produto_id, nome, marca) Relacionamentos:
+     *
+     * Um cliente pode ter vários agendamentos (relacionamento 1:N entre Cliente
+     * e Agendamento) Um agendamento é realizado por um cliente (relacionamento
+     * N:1 entre Cliente e Agendamento) Um agendamento é associado a um serviço
+     * (relacionamento N:1 entre Serviço e Agendamento) Um serviço é executado
+     * por um barbeiro em um agendamento (relacionamento N:1 entre Barbeiro,
+     * Agendamento, e Serviço) Um serviço pode envolver vários produtos e um
+     * produto pode ser utilizado em vários serviços (relacionamento N:N entre
+     * Serviço e Produto)
+     *
+     * /**
      * Encontra um funcionário por nome na lista de funcionários cadastrados.
      *
      * @param nome O nome do funcionário a ser encontrado.

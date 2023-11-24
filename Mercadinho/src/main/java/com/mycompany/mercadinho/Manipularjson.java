@@ -96,8 +96,42 @@ public class Manipularjson {
 
             // Criar uma nova lista mutável para evitar UnsupportedOperationException
             List<Administrador> listaAdministradores = Arrays.asList(administradores);
-            
+
             return listaAdministradores;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static final void EscreverCliente(List<Cliente> clientes) {
+        File clienteFile = new File("C:\\Users\\joaov\\OneDrive\\Documentos\\NetBeansProjects\\mavenproject1\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\ArquivosJson\\Cliente.json");
+
+        gson = new Gson();
+
+        System.out.println(gson.toJson(clientes));
+
+        String json = gson.toJson(clientes);
+
+        try (FileWriter writer = new FileWriter(clienteFile)) {
+            gson.toJson(clientes, writer);
+            System.out.println("Objeto convertido para JSON e salvo");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static final List<Cliente> LerCliente() {
+        Gson gson = new Gson();
+
+        try (FileReader reader = new FileReader("C:\\Users\\joaov\\OneDrive\\Documentos\\NetBeansProjects\\mavenproject1\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\ArquivosJson\\Cliente.json")) {
+            Cliente[] clientes = gson.fromJson(reader, Cliente[].class);
+
+            // Criar uma nova lista mutável para evitar UnsupportedOperationException
+            List<Cliente> listaClientes = Arrays.asList(clientes);
+
+            return listaClientes;
 
         } catch (IOException e) {
             e.printStackTrace();
