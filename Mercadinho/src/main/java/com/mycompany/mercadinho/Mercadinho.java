@@ -327,7 +327,7 @@ public class Mercadinho {
 
                 case 7:
                     boolean continuarAdicionandoProdutos = true;
-
+                    
                     while (continuarAdicionandoProdutos) {
                         System.out.println("Escolha a categoria do produto:");
                         System.out.println("1. Hortifrúti");
@@ -364,9 +364,9 @@ public class Mercadinho {
                                 continue; // Volte ao menu de categoria
                         }
 
-                        System.out.print("Digite o nome do novo produto (ou pressione Esc para parar): ");
+                        System.out.print("Digite o nome do novo produto (ou pressione S para parar): ");
                         String nomeProduto = scanner.nextLine();
-                        if (nomeProduto.equalsIgnoreCase("Esc")) {
+                        if (nomeProduto.equalsIgnoreCase("S")) {
                             continuarAdicionandoProdutos = false;
                             continue;
                         }
@@ -380,6 +380,7 @@ public class Mercadinho {
 
                         Produto novoProduto = new Produto(nomeProduto, precoProduto, categoria);
                         estoque.adicionarProduto(novoProduto, quantidadeInicial);
+                        Manipularjson.EscreverEstoque(estoque);
                         System.out.println("Produto adicionado ao estoque com sucesso!");
                     }
                     break;

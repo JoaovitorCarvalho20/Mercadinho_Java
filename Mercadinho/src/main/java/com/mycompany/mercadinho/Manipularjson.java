@@ -139,4 +139,39 @@ public class Manipularjson {
         }
     }
 
+    public static final void EscreverEstoque(Estoque estoque) {
+        File estoqueFile = new File("C:\\Users\\joaov\\OneDrive\\Documentos\\NetBeansProjects\\mavenproject1\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\ArquivosJson\\Estoque.json");
+
+        gson = new Gson();
+
+        System.out.println(gson.toJson(estoque));
+
+        String json = gson.toJson(estoque);
+
+        try (FileWriter writer = new FileWriter(estoqueFile)) {
+            gson.toJson(estoque, writer);
+            System.out.println("Objeto convertido para JSON e salvo no estoque.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+        public static final List<Estoque> LerEstoque() {
+        Gson gson = new Gson();
+
+        try (FileReader reader = new FileReader("C:\\Users\\joaov\\OneDrive\\Documentos\\NetBeansProjects\\mavenproject1\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\ArquivosJson\\Estoque.json")) {
+            Estoque[] estoques = gson.fromJson(reader, Estoque[].class);
+
+            // Criar uma nova lista mutável para evitar UnsupportedOperationException
+            List<Estoque> listaEstoque= Arrays.asList(estoques);
+
+            return listaEstoque;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

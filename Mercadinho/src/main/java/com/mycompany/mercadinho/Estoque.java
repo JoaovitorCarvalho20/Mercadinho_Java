@@ -17,6 +17,7 @@ public class Estoque {
     public Estoque() {
         produtosQuantidade = new HashMap<>();
     }
+    Manipularjson manipularjson=new Manipularjson();
 
     /**
      * Adiciona a quantidade especificada de um produto ao estoque.
@@ -32,6 +33,7 @@ public class Estoque {
 
         produtosQuantidade.put(produto, produtosQuantidade.getOrDefault(produto, 0) + quantidade);
         System.out.println(quantidade + " unidades de " + produto.getNomeProduto() + " adicionadas ao estoque.");
+       
     }
 
     /**
@@ -56,7 +58,10 @@ public class Estoque {
             }
         } else {
             System.out.println("Produto não encontrado em estoque.");
+            
         }
+        Manipularjson.EscreverEstoque(this);
+        Manipularjson.LerEstoque();
     }
 
     /**
