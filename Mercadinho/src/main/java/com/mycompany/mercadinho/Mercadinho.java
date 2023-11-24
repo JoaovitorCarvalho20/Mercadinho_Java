@@ -383,9 +383,17 @@ public class Mercadinho {
                     break;
 
                 case 9:
+
                     Funcionario funcionario = criarFuncionario();
-                    funcionariosCadastrados.add(funcionario);
-                    administradoresCadastrados.add(administrador);
+                    List<Funcionario> novaListaFuncionarios = new ArrayList<>(funcionariosCadastrados);
+                    novaListaFuncionarios.add(funcionario);
+                    funcionariosCadastrados = novaListaFuncionarios;
+
+                    if (funcionario instanceof Administrador) {
+                        List<Administrador> novaListaAdministradores = new ArrayList<>(administradoresCadastrados);
+                        novaListaAdministradores.add((Administrador) funcionario);
+                        administradoresCadastrados = novaListaAdministradores;
+                    }
 
                     System.out.println("Funcionário criado com sucesso!");
 
@@ -397,7 +405,6 @@ public class Mercadinho {
 
                     escreverAdministrador.EscreverAdministrador(administradoresCadastrados);
 
-                    break;
                 case 10:
                     System.out.println("Lista de Funcionários:");
                     for (Funcionario funcionarioS : funcionariosCadastrados) {
@@ -894,7 +901,7 @@ public class Mercadinho {
     private List<Administrador> carregarAdministradorDoJson() {
         List<Administrador> AdministradoresCadastrados = Manipularjson.LerAdministrador();
         if (AdministradoresCadastrados == null) {
-            System.out.println("Erro ao ler os dados dos funcionários.");
+            System.out.println("Erro ao ler os dados dos Administrador.");
         }
         return AdministradoresCadastrados;
     }
@@ -999,15 +1006,20 @@ public class Mercadinho {
      *
      * @param nomeUsuario O nome de usuário a ser encontrado.
      * @return O login correspondente se encontrado; null, caso contrário.
-     */
-    public Login encontrarLoginPorNomeUsuario(String nomeUsuario) {
-        for (Login login : loginsCadastrados) {
-            if (login.getNomeUsuario().equals(nomeUsuario)) {
-                return login;
-            }
-        }
-        return null;
-    }
+   Entidades:
+
+Cliente (cliente_id, nome, telefone, endereço)
+Agendamento (agendamento_id, data, serviço_id, cliente_id)
+Barbeiro (barbeiro_id, nome, especialidade)
+Serviço (serviço_id, nome, tipo, preço)
+Produto (produto_id, nome, marca)
+Relacionamentos:
+
+Um cliente pode ter vários agendamentos (relacionamento 1:N entre Cliente e Agendamento)
+Um agendamento é realizado por um cliente (relacionamento N:1 entre Cliente e Agendamento)
+Um agendamento é associado a um serviço (relacionamento N:1 entre Serviço e Agendamento)
+Um serviço é executado por um barbeiro em um agendamento (relacionamento N:1 entre Barbeiro, Agendamento, e Serviço)
+Um serviço pode envolver vários produtos e um produto pode ser utilizado em vários serviços (relacionamento N:N entre Serviço e Produto)
 
     /**
      * Encontra um funcionário por nome na lista de funcionários cadastrados.
@@ -1030,7 +1042,8 @@ public class Mercadinho {
     private void SelecionarCaixa() {
         Scanner scanner = new Scanner(System.in);
         for (int i = 1; i <= 5; i++) {
-            Caixa caixa = new Caixa(i, new ArrayList<>(), new ArrayList<>(), new GerenciamentoFiscal(vendas));
+
+            Caixa caixa = new Caixa(i, vendas, vendas, new GerenciamentoFiscal(vendas));
             caixas.add(caixa);
         }
 
