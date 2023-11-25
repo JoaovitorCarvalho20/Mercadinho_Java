@@ -1,5 +1,6 @@
 package com.mycompany.mercadinho;
 
+
 /**
  * Esta é a classe que representa um Produto em um mercadinho.
  * Ela define os atributos nomeProduto, valorDoProduto, id, categoria, e um atributo estático contador que conta
@@ -26,7 +27,7 @@ public class Produto {
         this.id = contador; // Atribui o valor de contador como o ID do produto
         contador++; // Incrementa o contador para o próximo produto
     }
-
+     
     /**
      * Obtém o contador de instâncias de Produto criadas.
      *
@@ -104,18 +105,15 @@ public class Produto {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Produto{" + "nomeProduto=" + nomeProduto + ", valorDoProduto=" + valorDoProduto + ", id=" + id + ", categoria=" + categoria + '}';
+    }
+
     /**
      * Substitui o método toString para fornecer uma representação em formato de string do objeto Produto.
      *
      * @return Uma representação em formato de string do objeto Produto.
      */
-    @Override
-    public String toString() {
-        return "Produto{" +
-                "nomeProduto='" + nomeProduto + '\'' +
-                ", valorDoProduto=" + valorDoProduto +
-                ", categoria='" + categoria + '\'' +
-                ", id=" + id +
-                '}';
-    }
+  
 }

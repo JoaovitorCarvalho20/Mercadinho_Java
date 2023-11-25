@@ -327,7 +327,7 @@ public class Mercadinho {
 
                 case 7:
                     boolean continuarAdicionandoProdutos = true;
-                    
+
                     while (continuarAdicionandoProdutos) {
                         System.out.println("Escolha a categoria do produto:");
                         System.out.println("1. Hortifrúti");
@@ -434,6 +434,11 @@ public class Mercadinho {
                 case 11:
                     System.out.println("Editar Produto");
                     System.out.print("Digite o ID do produto a ser editado: ");
+                    Manipularjson.LerEstoque();
+
+                    // Realizar a leitura do estoque e armazenar em uma variável
+                    Estoque estoque = Manipularjson.LerEstoque();
+
                     int produtoEditarId = scanner.nextInt();
                     scanner.nextLine();
 
@@ -511,7 +516,7 @@ public class Mercadinho {
                     break;
 
                 case 13:
-                        System.out.println("Editar Cliente");
+                    System.out.println("Editar Cliente");
                     System.out.print("Digite o CPF do cliente a ser editado: ");
                     String cpfEditar = scanner.nextLine();
 
