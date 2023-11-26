@@ -122,4 +122,5 @@ public class Caixa {
                "\nFuncionário Responsável: " + nomeFuncionario +
                "\nTipo de Funcionário: " + tipoFuncionario;
     }
+
 }

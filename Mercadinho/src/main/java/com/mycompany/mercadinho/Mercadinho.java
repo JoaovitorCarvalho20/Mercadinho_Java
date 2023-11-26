@@ -13,8 +13,9 @@ import java.util.Calendar;
  */
 public class Mercadinho {
 
-    // Lista estática de 5 caixas
-    private static List<Caixa> caixas = new ArrayList<>();
+    // Lista estática de 5 caixa
+  private static Caixa[] caixas = new Caixa[5];
+
 
     // Lista estática de logins
     private static List<Login> logins = new ArrayList<>();
@@ -131,10 +132,10 @@ public class Mercadinho {
                     double valorTotalVenda = 0.0; // Variável para rastrear o valor total da venda
 
                     while (continuarComprando) {
-                        System.out.print("Digite o ID do produto a ser vendido (ou '0' para finalizar a compra): ");
+                        System.out.print("Digite o ID do produto a ser vendido (ou 'S' para finalizar a compra): ");
                         String input = scanner.nextLine();
 
-                        if ("0".equals(input)) {
+                        if ("S".equals(input)) {
                             continuarComprando = false;
                             break;
                         }
@@ -915,21 +916,12 @@ public class Mercadinho {
         }
         System.out.println("Cliente não encontrado.");
     }
-
     /**
      * Encontra um caixa com base no número do caixa especificado.
      *
      * @param numeroCaixa O número do caixa a ser encontrado.
      * @return O caixa correspondente se encontrado; null, caso contrário.
      */
-    private static Caixa encontrarCaixaPorNumero(int numeroCaixa) {
-        for (Caixa caixa : caixas) {
-            if (caixa.getNumeroCaixa() == numeroCaixa) {
-                return caixa;
-            }
-        }
-        return null;
-    }
 
     /**
      * Realiza o processo de login no sistema, permitindo que administradores e
@@ -1010,6 +1002,7 @@ public class Mercadinho {
 
                     if (func.getSenha().equals(senha)) {
                         // Faça o que for necessário quando o login do funcionário for bem-sucedido
+                        SelecionarCaixa();
                         menuFuncionario(func);
                     } else {
                         System.out.println("Senha incorreta.");
@@ -1085,12 +1078,11 @@ public class Mercadinho {
     /**
      * Permite ao usuário selecionar um caixa para operação.
      */
-    private void SelecionarCaixa() {
+private void SelecionarCaixa() {
         Scanner scanner = new Scanner(System.in);
-        for (int i = 1; i <= 5; i++) {
 
-            Caixa caixa = new Caixa(i, vendas, vendas, new GerenciamentoFiscal(vendas));
-            caixas.add(caixa);
+        for (int i = 0; i < 5; i++) {
+            caixas[i] = new Caixa(i + 1, vendas, vendas, new GerenciamentoFiscal(vendas));
         }
 
         System.out.print("Digite o número do caixa: ");
@@ -1106,4 +1098,17 @@ public class Mercadinho {
         System.out.println("Bem-vindo ao Caixa " + numeroCaixaEscolhido);
     }
 
+
+    private Caixa encontrarCaixaPorNumero(int numeroCaixa) {
+        for (Caixa caixa : caixas) {
+            if (caixa != null && caixa.getNumeroCaixa() == numeroCaixa) {
+                return caixa;
+            }
+        }
+        return null;
+    }
+
+    // outros métodos e lógica do programa...
 }
+
+
