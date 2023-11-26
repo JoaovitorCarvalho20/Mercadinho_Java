@@ -1,5 +1,7 @@
 package com.mycompany.mercadinho;
 
+import java.util.Objects;
+
 
 /**
  * Esta é a classe que representa um Produto em um mercadinho.
@@ -104,6 +106,24 @@ public class Produto {
     public void setId(int id) {
         this.id = id;
     }
+    
+    
+    @Override
+public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+
+    Produto produto = (Produto) obj;
+    return id == produto.id;
+}
+
+@Override
+public int hashCode() {
+    return Objects.hash(id);
+}
+
+    
+    
 
     @Override
     public String toString() {

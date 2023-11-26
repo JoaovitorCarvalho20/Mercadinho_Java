@@ -122,6 +122,7 @@ public class Mercadinho {
 
             switch (choice) {
                 case 1:
+                    estoque = Manipularjson.LerEstoque(); // Carrega o estoque antes de iniciar a venda
                     System.out.println("Produtos disponíveis no estoque:");
                     estoque.exibirEstoque();
 
@@ -186,6 +187,7 @@ public class Mercadinho {
                         System.out.println("______________________________________________");
 
                         nextVendaId++;
+                        Manipularjson.EscreverEstoque(estoque);
                     }
 
                     break;
@@ -335,11 +337,11 @@ public class Mercadinho {
                         System.out.println("3. Congelados");
                         System.out.println("4. Bebidas");
                         System.out.println("5. Sair do modo de adição");
-                        System.out.print("Selecione a categoria ou '5' para sair: ");
-                        int categoriaChoice = scanner.nextInt();
-                        scanner.nextLine();
+                        System.out.print("Selecione a categoria (1 a 5) ou '5' para sair: ");
 
-                        if (categoriaChoice == 5) {
+                        String categoriaChoice = scanner.nextLine();
+
+                        if (categoriaChoice.equalsIgnoreCase("5")) {
                             continuarAdicionandoProdutos = false;
                             continue;
                         }
@@ -347,16 +349,16 @@ public class Mercadinho {
                         String categoria = "";
 
                         switch (categoriaChoice) {
-                            case 1:
+                            case "1":
                                 categoria = "Hortifrúti";
                                 break;
-                            case 2:
+                            case "2":
                                 categoria = "Alimentos";
                                 break;
-                            case 3:
+                            case "3":
                                 categoria = "Congelados";
                                 break;
-                            case 4:
+                            case "4":
                                 categoria = "Bebidas";
                                 break;
                             default:
@@ -434,15 +436,14 @@ public class Mercadinho {
                 case 11:
                     System.out.println("Editar Produto");
                     System.out.print("Digite o ID do produto a ser editado: ");
-                    Manipularjson.LerEstoque();
 
                     // Realizar a leitura do estoque e armazenar em uma variável
-                    Estoque estoque = Manipularjson.LerEstoque();
+                    Estoque estoqueEditar = Manipularjson.LerEstoque();
 
                     int produtoEditarId = scanner.nextInt();
                     scanner.nextLine();
 
-                    Produto produtoAEditar = encontrarProdutoPorID(estoque, produtoEditarId);
+                    Produto produtoAEditar = encontrarProdutoPorID(estoqueEditar, produtoEditarId);
                     if (produtoAEditar != null) {
                         System.out.print("Digite o novo nome do produto: ");
                         String novoNomeProduto = scanner.nextLine();
@@ -451,14 +452,14 @@ public class Mercadinho {
                         scanner.nextLine();
                         produtoAEditar.setNomeProduto(novoNomeProduto);
                         produtoAEditar.setValorDoProduto(novoPrecoProduto);
+
+                        // Escrever o estoque de volta após a edição
+                        Manipularjson.EscreverEstoque(estoqueEditar);
+
                         System.out.println("Produto editado com sucesso!");
                     } else {
                         System.out.println("Produto não encontrado no estoque.");
                     }
-                    break;
-
-                default:
-                    System.out.println("Opção inválida. Tente novamente.");
                     break;
 
                 case 12:

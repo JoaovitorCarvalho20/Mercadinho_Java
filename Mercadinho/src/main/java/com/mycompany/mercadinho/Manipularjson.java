@@ -143,7 +143,6 @@ public class Manipularjson {
             return null;
         }
     }
-
 public static final void EscreverEstoque(Estoque estoque) {
     File estoqueFile = new File("C:\\Users\\joaov\\OneDrive\\Documentos\\NetBeansProjects\\mavenproject1\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\ArquivosJson\\Estoque.json");
 
@@ -165,19 +164,29 @@ public static final void EscreverEstoque(Estoque estoque) {
         produtosArray = new JsonArray();
     }
 
-    // Adiciona os novos dados ao array apenas se não existirem
+    // Adiciona todos os produtos do estoque ao array
     for (Map.Entry<Produto, Integer> produtoQuantidade : estoque.produtosQuantidade.entrySet()) {
         JsonObject produtoJson = new JsonObject();
-        produtoJson.add("produto", gson.toJsonTree(produtoQuantidade.getKey()));
+        Produto produto = produtoQuantidade.getKey();
+        produtoJson.add("produto", gson.toJsonTree(produto));
         produtoJson.addProperty("quantidade", produtoQuantidade.getValue());
 
-        // Verifica se o produto já existe no array antes de adicioná-lo novamente
+        // Adiciona o novo produto ou atualiza a quantidade se o produto já existir no array
         boolean produtoJaExiste = false;
         for (JsonElement element : produtosArray) {
             JsonObject existingProduto = element.getAsJsonObject().getAsJsonObject("produto");
-            JsonObject novoProduto = produtoJson.getAsJsonObject().getAsJsonObject("produto");
+            int existingProdutoId = existingProduto.getAsJsonPrimitive("id").getAsInt();
 
-            if (existingProduto.equals(novoProduto)) {
+            if (existingProdutoId == produto.getId()) {
+                // Atualiza a quantidade do produto existente
+                int quantidadeExistente = element.getAsJsonObject().getAsJsonPrimitive("quantidade").getAsInt();
+                quantidadeExistente += produtoQuantidade.getValue();
+                element.getAsJsonObject().addProperty("quantidade", quantidadeExistente);
+                produtoJaExiste = true;
+                break;
+            } else if (existingProduto.getAsJsonPrimitive("nomeProduto").getAsString().equals(produto.getNomeProduto())
+                    && existingProduto.getAsJsonPrimitive("categoria").getAsString().equals(produto.getCategoria())) {
+                // Se o produto existe com o mesmo nome e categoria, mas ID diferente, não adiciona novamente
                 produtoJaExiste = true;
                 break;
             }
@@ -197,6 +206,7 @@ public static final void EscreverEstoque(Estoque estoque) {
     }
 }
 
+
 public static final Estoque LerEstoque() {
     File estoqueFile = new File("C:\\Users\\joaov\\OneDrive\\Documentos\\NetBeansProjects\\mavenproject1\\Mercadinho_Java\\Mercadinho\\src\\main\\java\\ArquivosJson\\Estoque.json");
 
@@ -212,10 +222,10 @@ public static final Estoque LerEstoque() {
             if (produtosArray != null) {
                 for (JsonElement element : produtosArray) {
                     JsonObject produtoJson = element.getAsJsonObject();
-                    Produto produto = gson.fromJson(produtoJson.getAsJsonObject("produto"), Produto.class);
+                    Produto produto = gson.fromJson(produtoJson.get("produto"), Produto.class);
                     int quantidade = produtoJson.getAsJsonPrimitive("quantidade").getAsInt();
 
-                    estoque.produtosQuantidade.put(produto, quantidade);
+                    estoque.adicionarProduto(produto, quantidade);
                 }
             }
         }
@@ -225,6 +235,9 @@ public static final Estoque LerEstoque() {
 
     return estoque;
 }
+
+
+  
 
 
 }
