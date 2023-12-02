@@ -69,6 +69,8 @@ public class Venda {
      */
     public boolean cancelarVenda(Estoque estoque, int quantidadeCancelada) {
         List<VendaItem> itensACancelar = new ArrayList<>();
+        
+        
         double valorCancelado = 0; // Variável para rastrear o valor cancelado
 
         for (VendaItem item : itens) {

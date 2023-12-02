@@ -1,23 +1,46 @@
 package com.mycompany.mercadinho;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 /**
  * A classe Estoque representa o estoque de produtos em um mercadinho.
  */
 public class Estoque {
-    public Map<Produto, Integer> produtosQuantidade; // Um mapeamento de produtos para suas quantidades em estoque.
+    
+    private Produto produto;
+    private Integer quantidade;
+   
 
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
+
+
+  
     /**
-     * Construtor padrão que inicializa o mapa de produtosQuantidade.
+     * Construtor padrão que inicializa  produtosQuantidade.
      */
     public Estoque() {
-        produtosQuantidade = new HashMap<>();
+      this.produto=produto;
+      this.quantidade=quantidade;
     }
-    Manipularjson manipularjson=new Manipularjson();
+  
+    
+   
 
     /**
      * Adiciona a quantidade especificada de um produto ao estoque.
@@ -31,7 +54,7 @@ public class Estoque {
             return;
         }
 
-        produtosQuantidade.put(produto, produtosQuantidade.getOrDefault(produto, 0) + quantidade);
+        
         System.out.println(quantidade + " unidades de " + produto.getNomeProduto() + " adicionadas ao estoque.");
        
     }
@@ -42,27 +65,31 @@ public class Estoque {
      * @param produto    O produto a ser removido.
      * @param quantidade A quantidade a ser removida.
      */
-    public void removerProduto(Produto produto, int quantidade) {
-        if (quantidade <= 0) {
-            System.out.println("A quantidade deve ser maior que zero.");
-            return;
-        }
-
-        if (produtosQuantidade.containsKey(produto)) {
-            int quantidadeExistente = produtosQuantidade.get(produto);
-            if (quantidadeExistente >= quantidade) {
-                produtosQuantidade.put(produto, quantidadeExistente - quantidade);
-                System.out.println(quantidade + " unidades de " + produto.getNomeProduto() + " removidas do estoque.");
-            } else {
-                System.out.println("Quantidade insuficiente em estoque para remover.");
-            }
-        } else {
-            System.out.println("Produto não encontrado em estoque.");
-            
-        }
-        Manipularjson.EscreverEstoque(this);
-        Manipularjson.LerEstoque();
+   public void removerProduto(Produto produto, int quantidade) {
+    if (quantidade <= 0) {
+        System.out.println("A quantidade deve ser maior que zero.");
+        return;
     }
+    
+    // Verifica se o produto está no estoque
+    if (produto != null) {
+        int quantidadeExistente = produto.getQuantidadeInicial();
+
+        // Verifica se a quantidade em estoque é suficiente
+        if (quantidadeExistente >= quantidade) {
+            produto.setQuantidadeInicial(quantidadeExistente - quantidade);
+            System.out.println(quantidade + " unidades de " + produto.getNomeProduto() + " removidas do estoque.");
+        } else {
+            System.out.println("Quantidade insuficiente em estoque para remover.");
+        }
+    } else {
+        System.out.println("Produto não encontrado em estoque.");
+    }
+
+    // Você pode precisar adicionar manipulação de JSON aqui
+    Manipularjson.EscreverEstoque(produto);
+    Manipularjson.LerEstoque();
+}
 
     /**
      * Verifica a quantidade de um produto no estoque.
@@ -70,23 +97,24 @@ public class Estoque {
      * @param produto O produto a ser verificado.
      * @return A quantidade em estoque do produto.
      */
-    public int verificarEstoque(Produto produto) {
-        int quantidade = produtosQuantidade.getOrDefault(produto, 0);
-        System.out.println("Quantidade de " + produto.getNomeProduto() + " em estoque: " + quantidade + " unidades.");
-        return quantidade;
-    }
+  public int verificarEstoque(Produto produto) {
+    int quantidade = produto.getQuantidadeInicial();
+    //System.out.println("Quantidade de " + produto.getNomeProduto() + " em estoque: " + quantidade + " unidades.");
+    return quantidade;
+}
+
 
     /**
      * Exibe o estoque atual, listando todos os produtos e suas quantidades em estoque.
      */
-    public void exibirEstoque() {
-        System.out.println("---- Estoque Atual ----");
-        for (Map.Entry<Produto, Integer> entry : produtosQuantidade.entrySet()) {
-            Produto produto = entry.getKey();
-            int quantidade = entry.getValue();
-            System.out.println(produto.toString() + " - Quantidade em estoque: " + quantidade + " unidades.");
-        }
-    }
+public List<Produto> exibirEstoque() {
+    System.out.println("---- Estoque Atual ----");
+
+     return Manipularjson.LerEstoque(); 
+}
+
+
+
 
     /**
      * Adiciona a quantidade especificada de um produto ao estoque, com base no ID do produto.
@@ -110,22 +138,33 @@ public class Estoque {
      * @param produtoId O ID do produto a ser encontrado.
      * @return O produto encontrado ou null se não encontrado.
      */
-    public Produto encontrarProdutoPorID(int produtoId) {
-        for (Produto produto : produtosQuantidade.keySet()) {
-            if (produto.getId() == produtoId) {
-                return produto;
-            }
-        }
-        return null;
+  public Produto encontrarProdutoPorID(int produtoId) {
+    // Verifica se o produto no estoque tem o ID correspondente
+    if (this.produto != null && this.produto.getId() == produtoId) {
+        return this.produto;
     }
+    
+    // Retorna null se o produto não for encontrado
+    return null;
+}
+
 
     /**
      * Obtém uma lista de todos os produtos no estoque.
      *
      * @return Uma lista de produtos.
      */
-    public List<Produto> getProdutos() {
-        List<Produto> listaProdutos = new ArrayList<>(produtosQuantidade.keySet());
-        return listaProdutos;
+  public List<Produto> getProdutos() {
+    List<Produto> listaProdutos = new ArrayList<>();
+    
+    // Verifica se o produto não é nulo antes de acessar seus métodos
+    if (produto != null) {
+        for (int i = 0; i < produto.getQuantidadeInicial(); i++) {
+            listaProdutos.add(produto);
+        }
     }
+
+    return listaProdutos;
+}
+
 }

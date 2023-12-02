@@ -15,7 +15,7 @@ public class Administrador extends Funcionario {
      * @param senha A senha do administrador.
      */
     public Administrador(String nome, int id, String senha) {
-        super(nome, id, senha);
+        super(nome, id, senha); //Q4
         this.setIsAdm(true);
     }
 

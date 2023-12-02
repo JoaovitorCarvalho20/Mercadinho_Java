@@ -1,46 +1,56 @@
 package com.mycompany.mercadinho;
 
 import Comparators.ClienteComparator;
+import Comparators.FuncionarioComparator;
 
 import java.util.ArrayList;
-
 import java.util.Collections;
-
+import java.util.Iterator;
 import java.util.List;
+/**
+ Classe Sistema que intancia o Mercadinho.
+ * E onde os testes propostos são feitos 
+ 
+ */
 
-import Comparators.EstoqueComparator;
 
 public class Sistema {
 
     public static void main(String[] args) {
         // Instanciando o mercadinho usando o Singleton que garante apenas uma instância única do Mercadinho
         Mercadinho mercadinho = Mercadinho.getInstance();
+        //Q16
+        // Criação da lista de funcionários
+        List<Funcionario> listaFuncionarios = new ArrayList<>();
 
-        Produto p1 = new Produto("Arroz", 10, "Alimentos");
-        Produto p2 = new Produto("Feijão", 13, "Alimentos");
-        Produto p3 = new Produto("Macarrão", 14, "Alimentos");
+        // Criação de instâncias da classe Funcionario
+        Funcionario f1 = new Funcionario("João", 1, "teste");
+        Funcionario f2 = new Funcionario("Maria", 2, "teste123");
+        Funcionario f3 = new Funcionario("Carlos", 3, "123teste");
+        Funcionario f4 = new Funcionario("Ana", 4, "12teste3");
 
-        Estoque estoque = new Estoque();
-        estoque.adicionarProduto(p1, 30);
-        estoque.adicionarProduto(p2, 10);
-        estoque.adicionarProduto(p3, 50);
+        // Adição dos funcionários à lista
+        listaFuncionarios.add(f1);
+        listaFuncionarios.add(f2);
+        listaFuncionarios.add(f3);
+        listaFuncionarios.add(f4);
 
-        // Modificado: Obtendo a lista de produtos do estoque
-        List<Produto> produtosNoEstoque = estoque.getProdutos();
+        // Ordenação da lista de funcionários com base no nome usando o FuncionarioComparator
+        Collections.sort(listaFuncionarios, new FuncionarioComparator());
 
-        // Modificado: Ordenando a lista de produtos usando o comparador EstoqueComparator
-        Collections.sort(produtosNoEstoque, new EstoqueComparator(estoque));
-
-        // Imprimindo os produtos modificados os produtos ordenados
-        System.out.println("Produtos no estoque ordenados:");
-        for (Produto produto : produtosNoEstoque) {
-            System.out.println(produto);
+        // Impressão dos funcionários ordenados por nome
+        System.out.println("Funcionários ordenados por nome:");
+        for (Funcionario funcionario : listaFuncionarios) {
+            System.out.println(funcionario);
         }
 
         System.out.println("-----------------------------");
 
         // Criação da lista de clientes
         List<Cliente> listaClientes = new ArrayList<>();
+
+        // Criação do Iterator para a lista de clientes
+        Iterator<Cliente> iteratorClientes = listaClientes.iterator();
 
         // Criação de instâncias da classe Cliente
         Cliente c1 = new Cliente("João", "123-456789", "Rua A", "111.222.333-44", "joao@example.com");
@@ -53,7 +63,7 @@ public class Sistema {
         listaClientes.add(c2);
         listaClientes.add(c3);
         listaClientes.add(c4);
-
+        //Q16
         // Ordenação da lista de clientes com base no CPF usando o ClienteComparator
         Collections.sort(listaClientes, new ClienteComparator());
 
@@ -63,15 +73,51 @@ public class Sistema {
             System.out.println(cliente);
         }
 
-        /**
-         * Esta é a classe principal do sistema do Mercadinho. Autor: João Vitor
-         * Aparecido Carvalho
-         */
+        //Q17
+        // Encontrar cliente existente
+        System.out.println("\nEncontrar cliente por telefone");
+
+        Cliente clienteEncontrado = mercadinho.findClienteByTelefone("987-654321", listaClientes);
+        if (clienteEncontrado != null) {
+            System.out.println("Cliente encontrado: " + clienteEncontrado.getNome());
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+
+        System.out.println("\nEncontrar cliente por telefone");
+        // Tentar encontrar cliente inexistente
+        Cliente clienteNaoEncontrado = mercadinho.findClienteByTelefone("111-222333", listaClientes);
+        if (clienteNaoEncontrado != null) {
+            System.out.println("Cliente encontrado: " + clienteNaoEncontrado.getNome());
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+
+//        // Percorre a lista de clientes usando o código fornecido
+//        System.out.println("\nPercorrendo a lista de clientes usando o Iterator:");
+//        while (iteratorClientes.hasNext()) {
+//            mercadinho.imprimirCliente(iteratorClientes.next());
+
+
+        // Lógica para continuar ou encerrar o programa
         while (true) {
+             /**
+              Adminitrador: 
+              * Nome : joao
+              * Senha : 123
+              * 
+              * Funcionario:
+              * nome: Vitor
+              * Senha : 456
+              * 
+              */
+
+
             mercadinho.login();
         }
-        
     }
-  
-   
 }
+
+// Para rodar o codigo antes troque os caminhos da classe Manipular Json
+
+

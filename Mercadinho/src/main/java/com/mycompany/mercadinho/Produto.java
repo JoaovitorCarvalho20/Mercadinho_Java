@@ -14,6 +14,15 @@ public class Produto {
     private double valorDoProduto;
     private int id;
     private String categoria;
+    private int quantidadeInicial;
+
+    public int getQuantidadeInicial() {
+        return quantidadeInicial;
+    }
+
+    public void setQuantidadeInicial(int quantidadeInicial) {
+        this.quantidadeInicial = quantidadeInicial;
+    }
 
     /**
      * Construtor para criar um objeto Produto.
@@ -22,11 +31,12 @@ public class Produto {
      * @param valorDoProduto O valor do produto.
      * @param categoria      A categoria do produto.
      */
-    public Produto(String nomeProduto, double valorDoProduto, String categoria) {
+    public Produto(String nomeProduto, double valorDoProduto, String categoria, int quantidadeInicial) {
         this.nomeProduto = nomeProduto;
         this.valorDoProduto = valorDoProduto;
         this.categoria = categoria; // Adiciona a categoria do produto
         this.id = contador; // Atribui o valor de contador como o ID do produto
+        this.quantidadeInicial=quantidadeInicial;
         contador++; // Incrementa o contador para o próximo produto
     }
      
